@@ -55,7 +55,7 @@ public class Post {
   @Column(nullable = false)
   private LocalDateTime updatedAt;
 
-  @Column(nullable = false)
+  @Column(columnDefinition = "BIGINT default 0", nullable = false)
   private Long hits;
 
   @OneToMany(mappedBy = "post", cascade = REMOVE)
