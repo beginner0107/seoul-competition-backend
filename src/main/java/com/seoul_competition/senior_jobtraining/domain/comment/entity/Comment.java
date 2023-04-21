@@ -33,9 +33,12 @@ public class Comment {
   @JoinColumn(name = "post_id", nullable = false)
   private Post post;
 
+  @Column(nullable = false)
   private String nickname;
 
+  @Column(nullable = false)
   private String password;
 
+  @Column(nullable = false)
   private String content;
 }

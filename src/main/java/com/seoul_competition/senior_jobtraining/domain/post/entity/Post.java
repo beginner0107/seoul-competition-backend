@@ -1,16 +1,21 @@
 package com.seoul_competition.senior_jobtraining.domain.post.entity;
 
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.seoul_competition.senior_jobtraining.domain.comment.entity.Comment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,13 +33,17 @@ public class Post {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
   private String nickname;
 
+  @Column(nullable = false)
   private String password;
 
+  @Column(nullable = false)
   private String title;
 
   @Lob
+  @Column(nullable = false)
   private String content;
 
   @CreatedDate
@@ -45,5 +54,9 @@ public class Post {
   @Column(nullable = false)
   private LocalDateTime updatedAt;
 
+  @Column(nullable = false)
   private Long hits;
+
+  @OneToMany(mappedBy = "post", cascade = REMOVE)
+  private final List<Comment> comments = new ArrayList<>();
 }
