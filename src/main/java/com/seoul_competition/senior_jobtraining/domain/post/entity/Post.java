@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -59,4 +60,21 @@ public class Post {
 
   @OneToMany(mappedBy = "post", cascade = REMOVE)
   private final List<Comment> comments = new ArrayList<>();
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof Post other)) {
+      return false;
+    }
+    return Objects.equals(this.id, other.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
+
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,4 +42,21 @@ public class Comment {
 
   @Column(nullable = false)
   private String content;
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof Comment other)) {
+      return false;
+    }
+    return Objects.equals(this.id, other.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.id);
+  }
+
 }
