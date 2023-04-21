@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -42,6 +43,14 @@ public class Comment {
 
   @Column(nullable = false)
   private String content;
+
+  @Builder
+  private Comment(Post post, String nickname, String password, String content) {
+    this.post = post;
+    this.nickname = nickname;
+    this.password = password;
+    this.content = content;
+  }
 
   @Override
   public boolean equals(Object obj) {

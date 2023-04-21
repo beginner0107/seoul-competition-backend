@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -60,6 +61,18 @@ public class Post {
 
   @OneToMany(mappedBy = "post", cascade = REMOVE)
   private final List<Comment> comments = new ArrayList<>();
+
+  @Builder
+  private Post(String nickname, String password, String title, String content,
+      LocalDateTime createdAt, LocalDateTime updatedAt, Long hits) {
+    this.nickname = nickname;
+    this.password = password;
+    this.title = title;
+    this.content = content;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.hits = hits;
+  }
 
   @Override
   public boolean equals(Object obj) {
