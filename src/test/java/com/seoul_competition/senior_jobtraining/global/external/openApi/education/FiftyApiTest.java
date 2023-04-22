@@ -20,10 +20,9 @@ class FiftyApiTest {
   @DisplayName("공공 데이터에서 json을 정상적으로 파싱하는지 확인한다.")
   @Test
   void parsing_check() {
-    fiftyApi.fiftyInfo();
-    System.out.println("fiftyApi.fiftyInfo() = " + fiftyApi.getTotalCount());
+    fiftyApi.getJson();
+    System.out.println("fiftyApi.getTotalCount() = " + fiftyApi.getTotalCount());
     System.out.println("fiftyApi.getSubResult() = " + fiftyApi.getSubResult());
-    System.out.println("fiftyApi.getResult() = " + fiftyApi.getResult());
     System.out.println("fiftyApi.getInfoArr() = " + fiftyApi.getInfoArr());
   }
 
