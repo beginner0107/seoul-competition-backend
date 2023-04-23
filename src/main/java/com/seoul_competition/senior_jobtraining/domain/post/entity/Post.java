@@ -74,6 +74,10 @@ public class Post {
     this.hits = hits;
   }
 
+  public void addHits() {
+    this.hits++;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj == this) {
