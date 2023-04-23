@@ -7,7 +7,7 @@ public record PostResDto(Long id,
                          String title,
                          String content,
                          Long hits,
-                         Long commentCount) {
+                         Long commentsCount) {
 
   public static PostResDto of(Post post) {
     return new PostResDto(
