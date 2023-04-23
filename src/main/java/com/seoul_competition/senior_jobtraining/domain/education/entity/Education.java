@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.lang.String;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "education")
-public class EducationEntity {
+public class Education {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,18 +32,18 @@ public class EducationEntity {
   @Column(name = "price", nullable = false)
   private int price;
   @Column(name = "register_start", nullable = false)
-  private LocalDateTime registerStart;
+  private String registerStart;
   @Column(name = "register_end", nullable = false)
-  private LocalDateTime registerEnd;
+  private String registerEnd;
   @Column(name = "education_start", nullable = false)
-  private LocalDateTime educationStart;
+  private String educationStart;
   @Column(name = "education_end", nullable = false)
-  private LocalDateTime educationEnd;
+  private String educationEnd;
 
   @Builder
-  public EducationEntity(String name, String state, String url, int price,
-      LocalDateTime registerStart, LocalDateTime registerEnd, LocalDateTime educationStart,
-      LocalDateTime educationEnd) {
+  public Education(String name, String state, String url, int price,
+      String registerStart, String registerEnd, String educationStart,
+      String educationEnd) {
     this.name = name;
     this.state = state;
     this.url = url;
