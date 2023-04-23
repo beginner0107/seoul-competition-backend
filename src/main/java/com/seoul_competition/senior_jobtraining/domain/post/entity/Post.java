@@ -78,6 +78,17 @@ public class Post {
     this.hits++;
   }
 
+  public void checkPassword(String password) {
+    if (!Objects.equals(this.password, password)) {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  public void update(String title, String content) {
+    this.title = title;
+    this.content = content;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj == this) {
