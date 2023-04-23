@@ -7,10 +7,11 @@ import lombok.Getter;
 @Getter
 public class EducationResponse {
 
+  private int price;
+  private int capacity;
   private String name;
   private String state;
   private String url;
-  private int price;
   private String registerStart;
   private String registerEnd;
   private String educationStart;
@@ -21,6 +22,7 @@ public class EducationResponse {
     this.state = education.getState();
     this.url = education.getUrl();
     this.price = education.getPrice();
+    this.capacity = education.getCapacity();
     this.registerStart = education.getRegisterStart();
     this.registerEnd = education.getRegisterEnd();
     this.educationStart = education.getEducationStart();
