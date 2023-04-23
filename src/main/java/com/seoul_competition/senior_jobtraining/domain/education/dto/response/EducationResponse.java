@@ -7,15 +7,15 @@ import lombok.Getter;
 @Getter
 public class EducationResponse {
 
-  private int price;
-  private int capacity;
   private String name;
   private String state;
-  private String url;
+  private int price;
+  private int capacity;
   private String registerStart;
   private String registerEnd;
   private String educationStart;
   private String educationEnd;
+  private String url;
 
   public EducationResponse(Education education) {
     this.name = education.getName();
