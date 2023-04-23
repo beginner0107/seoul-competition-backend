@@ -30,10 +30,8 @@ public class FiftyApi {
   public void getJson() {
     try {
       URL url = new URL(String.format(OPENAPI_URL, key));
-      BufferedReader bf;
-      bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-      String result = bf.readLine();
-      jsonPasring(result);
+      BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+      jsonPasring(bf.readLine());
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -42,10 +40,10 @@ public class FiftyApi {
   private void jsonPasring(String result) throws ParseException {
     JSONParser jsonParser = new JSONParser();
     JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-    JSONObject CardSubwayStatsNew = (JSONObject) jsonObject.get("FiftyPotalEduInfo");
+    JSONObject fiftyPotal = (JSONObject) jsonObject.get("FiftyPotalEduInfo");
 
-    totalCount = (Long) CardSubwayStatsNew.get("list_total_count");
-    subResult = (JSONObject) CardSubwayStatsNew.get("RESULT");
-    infoArr = (JSONArray) CardSubwayStatsNew.get("row");
+    totalCount = (Long) fiftyPotal.get("list_total_count");
+    subResult = (JSONObject) fiftyPotal.get("RESULT");
+    infoArr = (JSONArray) fiftyPotal.get("row");
   }
 }
