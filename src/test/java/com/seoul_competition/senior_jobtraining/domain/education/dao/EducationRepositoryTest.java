@@ -2,7 +2,7 @@ package com.seoul_competition.senior_jobtraining.domain.education.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.seoul_competition.senior_jobtraining.domain.education.entity.EducationEntity;
+import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ class EducationRepositoryTest {
 
   @BeforeEach
   public void beforeEach() {
-    EducationEntity Education1 = EducationEntity.builder()
+    Education Education1 = Education.builder()
         .name("aaa")
         .state("as")
         .url("Asda")
@@ -30,7 +30,7 @@ class EducationRepositoryTest {
         .educationEnd(LocalDateTime.now())
         .build();
 
-    EducationEntity Education2 = EducationEntity.builder()
+    Education Education2 = Education.builder()
         .name("bbb")
         .state("saz")
         .url("http:Asda")
@@ -48,7 +48,7 @@ class EducationRepositoryTest {
   @DisplayName("Education 모두 DB에 정상 저장되는지 확인")
   @Test
   public void when_findAll_should_right() {
-    List<EducationEntity> findEducations = educationRepository.findAll();
+    List<Education> findEducations = educationRepository.findAll();
     assertThat(findEducations.size()).isEqualTo(2);
   }
 

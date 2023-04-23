@@ -1,6 +1,6 @@
 package com.seoul_competition.senior_jobtraining.domain.education.dto.response;
 
-import com.seoul_competition.senior_jobtraining.domain.education.entity.EducationEntity;
+import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import lombok.Getter;
 
 
@@ -16,7 +16,7 @@ public class EducationResponse {
   private String educationStart;
   private String educationEnd;
 
-  public EducationResponse(EducationEntity education) {
+  public EducationResponse(Education education) {
     this.name = education.getName();
     this.state = education.getState();
     this.url = education.getUrl();

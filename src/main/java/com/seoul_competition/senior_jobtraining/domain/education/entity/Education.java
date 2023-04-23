@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "education")
-public class EducationEntity {
+public class Education {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class EducationEntity {
   private String educationEnd;
 
   @Builder
-  public EducationEntity(String name, String state, String url, int price,
+  public Education(String name, String state, String url, int price,
       String registerStart, String registerEnd, String educationStart,
       String educationEnd) {
     this.name = name;
