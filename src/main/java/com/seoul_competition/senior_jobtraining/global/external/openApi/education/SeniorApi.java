@@ -1,5 +1,6 @@
 package com.seoul_competition.senior_jobtraining.global.external.openApi.education;
 
+import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -25,7 +26,7 @@ public class SeniorApi {
   private JSONObject subResult;
   private JSONArray infoArr;
 
-
+  @PostConstruct
   public void getJson() {
     try {
       URL url = new URL(String.format(OPENAPI_URL, key));

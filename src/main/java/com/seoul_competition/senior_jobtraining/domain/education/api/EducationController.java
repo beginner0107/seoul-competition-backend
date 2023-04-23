@@ -20,6 +20,7 @@ public class EducationController {
 
   @GetMapping
   public ResponseEntity<EducationListResponse> getAllEducations() {
+    educationService.saveAll();
     EducationListResponse response = educationService.findAll();
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
