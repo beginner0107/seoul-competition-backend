@@ -13,7 +13,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
   @Query("SELECT p FROM Post p LEFT JOIN FETCH p.comments WHERE p.id = :id")
   Optional<Post> findByIdWithComments(@Param("id") Long id);
 
-  @Query(value = "SELECT p FROM Post p LEFT JOIN FETCH p.comments",
+  @Query(value = "SELECT p FROM Post p LEFT JOIN FETCH p.comments ORDER BY p.createdAt DESC",
       countQuery = "SELECT count(p) FROM Post p")
   List<Post> findAllWithComments(Pageable pageable);
 }
