@@ -3,9 +3,11 @@ package com.seoul_competition.senior_jobtraining.domain.post.api;
 import com.seoul_competition.senior_jobtraining.domain.post.application.PostService;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSaveReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostResDto;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,11 +37,19 @@ public class PostController {
         .build();
   }
 
+  @GetMapping
+  public ResponseEntity<List<PostResDto>> getPosts(@RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "20") int size) {
+    List<PostResDto> posts = postService.getPosts(page - 1, size);
+    return ResponseEntity.ok(posts);
+  }
+
+
   @GetMapping("/{postId}")
-  public ResponseEntity<PostResDto> getPost(@PathVariable Long postId) {
-    PostResDto postResDto = postService.getPost(postId);
+  public ResponseEntity<PostDetailResDto> getPost(@PathVariable Long postId) {
+    PostDetailResDto postDetailResDto = postService.getPost(postId);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(postResDto);
+        .body(postDetailResDto);
   }
 
   @PutMapping("/{postId}")
