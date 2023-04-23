@@ -24,10 +24,10 @@ class EducationRepositoryTest {
         .state("as")
         .url("Asda")
         .price(120)
-        .registerStart(LocalDateTime.now())
-        .registerEnd(LocalDateTime.now())
-        .educationStart(LocalDateTime.now())
-        .educationEnd(LocalDateTime.now())
+        .registerStart("2024-12-25")
+        .registerEnd("2024-12-25")
+        .educationStart("2024-12-25")
+        .educationEnd("2024-12-25")
         .build();
 
     Education Education2 = Education.builder()
@@ -35,10 +35,10 @@ class EducationRepositoryTest {
         .state("saz")
         .url("http:Asda")
         .price(12011)
-        .registerStart(LocalDateTime.now())
-        .registerEnd(LocalDateTime.now())
-        .educationStart(LocalDateTime.now())
-        .educationEnd(LocalDateTime.now())
+        .registerStart("2024-12-25")
+        .registerEnd("2024-12-25")
+        .educationStart("2024-12-25")
+        .educationEnd("2024-12-25")
         .build();
 
     educationRepository.save(Education1);
