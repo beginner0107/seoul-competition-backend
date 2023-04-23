@@ -18,9 +18,14 @@ public class EducationController {
 
   private final EducationService educationService;
 
+  private boolean first = true;
+
   @GetMapping
   public ResponseEntity<EducationListResponse> getAllEducations() {
-    educationService.saveAll();
+    if (first) {
+      educationService.saveAll();
+      first = false;
+    }
     EducationListResponse response = educationService.findAll();
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
