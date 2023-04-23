@@ -22,6 +22,8 @@ public class EducationService {
   private final EducationRepository educationRepository;
   private final FiftyApi fiftyApi;
   private final SeniorApi seniorApi;
+  private final static String BEFORE_WAITING_CONTENT = "접수중";
+  private final static String AFTER_WAITING_CONTENT = "수강신청중";
 
   public EducationListResponse findAll() {
     return new EducationListResponse(entityToResponse());
@@ -64,18 +66,29 @@ public class EducationService {
   private void saveSenior(JSONArray infoArr) {
     for (int i = 0; i < infoArr.size(); i++) {
       JSONObject jsonObject = (JSONObject) infoArr.get(i);
+
+      String applyState = getCommonApplyState(jsonObject);
+
       Education education = Education.builder()
           .name((String) jsonObject.get("SUBJECT"))
-          .state((String) jsonObject.get("APPLY_STATE"))
+          .state(applyState)
           .url((String) jsonObject.get("VIEWDETAIL"))
           .price(Integer.parseInt((String) jsonObject.get("REGISTCOST")))
           .capacity(Integer.parseInt((String) jsonObject.get("REGISTPEOPLE")))
-          .registerStart((String) jsonObject.get("APPLICATIONSTARTDATE"))
-          .registerEnd((String) jsonObject.get("APPLICATIONENDDATE"))
-          .educationStart((String) jsonObject.get("STARTDATE"))
-          .educationEnd((String) jsonObject.get("ENDDATE"))
+          .registerStart(((String) jsonObject.get("APPLICATIONSTARTDATE")).replaceAll("-", "."))
+          .registerEnd(((String) jsonObject.get("APPLICATIONENDDATE")).replaceAll("-", "."))
+          .educationStart(((String) jsonObject.get("STARTDATE")).replaceAll("-", "."))
+          .educationEnd(((String) jsonObject.get("ENDDATE")).replaceAll("-", "."))
           .build();
       educationRepository.save(education);
     }
+  }
+
+  private static String getCommonApplyState(JSONObject jsonObject) {
+    String applyState = (String) jsonObject.get("APPLY_STATE");
+    if (applyState.equals(BEFORE_WAITING_CONTENT)) {
+      applyState = AFTER_WAITING_CONTENT;
+    }
+    return applyState;
   }
 }
