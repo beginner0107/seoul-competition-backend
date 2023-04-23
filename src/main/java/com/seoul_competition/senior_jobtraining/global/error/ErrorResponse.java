@@ -13,6 +13,7 @@ public class ErrorResponse {
   public static Map<String, String> from(Map<String, String> errors) {
     return errors;
   }
+  
 
   private final Map<String, String> errors;
 }

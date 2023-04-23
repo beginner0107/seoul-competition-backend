@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
-  ;
+  
+  POST_NOT_EXISTS("해당 게시글은 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
   private String message;
   private HttpStatus httpStatus;

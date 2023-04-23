@@ -6,7 +6,8 @@ import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpda
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
-import jakarta.persistence.EntityNotFoundException;
+import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,9 @@ public class PostService {
 
   @Transactional
   public PostDetailResDto getPost(Long postId) {
-    Post post = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new EntityNotFoundException(
+            ErrorCode.POST_NOT_EXISTS));
 
     post.addHits();
 
@@ -39,7 +42,9 @@ public class PostService {
 
   @Transactional
   public void update(Long postId, PostUpdateReqDto reqDto) {
-    Post post = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new EntityNotFoundException(
+            ErrorCode.POST_NOT_EXISTS));
     post.checkPassword(reqDto.password());
 
     post.update(reqDto.title(), reqDto.content());
@@ -47,7 +52,9 @@ public class PostService {
 
   @Transactional
   public void delete(Long postId, String password) {
-    Post post = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new EntityNotFoundException(
+            ErrorCode.POST_NOT_EXISTS));
     post.checkPassword(password);
     postRepository.delete(post);
   }
