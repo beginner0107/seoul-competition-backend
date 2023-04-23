@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class EducationResponse {
 
+  private Long id;
   private String name;
   private String state;
   private int price;
@@ -18,6 +19,7 @@ public class EducationResponse {
   private String url;
 
   public EducationResponse(Education education) {
+    this.id = education.getId();
     this.name = education.getName();
     this.state = education.getState();
     this.url = education.getUrl();
