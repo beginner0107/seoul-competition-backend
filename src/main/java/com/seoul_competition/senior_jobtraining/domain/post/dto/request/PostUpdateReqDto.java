@@ -7,4 +7,7 @@ public record PostUpdateReqDto(
     @NotBlank(message = "게시글 제목을 입력해주세요.") String title,
     @NotBlank(message = "게시글 본문을 입력해주세요.") String content) {
 
+  public static PostUpdateReqDto of(String password, String title, String content) {
+    return new PostUpdateReqDto(password, title, content);
+  }
 }

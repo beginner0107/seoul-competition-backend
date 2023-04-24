@@ -5,6 +5,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.seoul_competition.senior_jobtraining.domain.comment.entity.Comment;
+import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -80,7 +82,7 @@ public class Post {
 
   public void checkPassword(String password) {
     if (!Objects.equals(this.password, password)) {
-      throw new IllegalArgumentException();
+      throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
     }
   }
 

@@ -2,6 +2,7 @@ package com.seoul_competition.senior_jobtraining.global.error;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,9 +10,10 @@ import lombok.Getter;
 @AllArgsConstructor(access = PRIVATE)
 public class ErrorResponse {
 
-  public static ErrorResponse from(String message) {
-    return new ErrorResponse(message);
+  public static Map<String, String> from(Map<String, String> errors) {
+    return errors;
   }
+  
 
-  private final String message;
+  private final Map<String, String> errors;
 }

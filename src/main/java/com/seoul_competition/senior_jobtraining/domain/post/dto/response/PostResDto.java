@@ -1,26 +1,23 @@
 package com.seoul_competition.senior_jobtraining.domain.post.dto.response;
 
-import com.seoul_competition.senior_jobtraining.domain.comment.dto.response.CommentResDto;
-import com.seoul_competition.senior_jobtraining.domain.comment.entity.Comment;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
 
-public record PostResDto(
-    Long id,
-    String nickname,
-    String title,
-    String content,
-    LocalDateTime createdAt,
-    Long hits,
-    List<CommentResDto> comments
-) {
+public record PostResDto(Long id,
+                         String nickname,
+                         String title,
+                         String content,
+                         Long hits,
+                         Long commentsCount) {
 
-  public static PostResDto of(Long id, String nickname, String title, String content,
-      LocalDateTime createdAt, Long hits, List<Comment> comments) {
-    List<CommentResDto> commentResDtos = comments.stream()
-        .map(CommentResDto::from)
-        .collect(Collectors.toList());
-    return new PostResDto(id, nickname, title, content, createdAt, hits, commentResDtos);
+  public static PostResDto of(Post post) {
+    return new PostResDto(
+        post.getId(),
+        post.getNickname(),
+        post.getTitle(),
+        post.getContent(),
+        post.getHits(),
+        (long) post.getComments().size()
+    );
   }
+
 }
