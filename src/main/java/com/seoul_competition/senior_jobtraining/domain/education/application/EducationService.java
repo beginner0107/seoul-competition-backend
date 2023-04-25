@@ -5,21 +5,21 @@ import com.seoul_competition.senior_jobtraining.domain.education.application.con
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
-import com.seoul_competition.senior_jobtraining.global.external.openApi.education.FiftyApi;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.SeniorApi;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Getter
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class EducationService {
 
   private final EducationRepository educationRepository;
-  private final FiftyApi fiftyApi;
   private final SeniorApi seniorApi;
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
@@ -40,7 +40,7 @@ public class EducationService {
 
   @Transactional
   public void saveAll() {
-    educationFiftyService.saveFifty(fiftyApi.getInfoArr());
+    educationFiftyService.saveFifty();
     educationSeniorService.saveSenior(seniorApi.getInfoArr());
   }
 
