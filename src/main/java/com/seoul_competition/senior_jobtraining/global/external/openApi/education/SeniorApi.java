@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class SeniorApi {
 
   private static final String OPENAPI_URL =
-      "http://openapi.seoul.go.kr:8088/%s/json/tbViewProgram/1/999";
+      "http://openapi.seoul.go.kr:8088/%s/json/tbViewProgram/0/999";
 
   @Value("${key.senior}")
   private String key;
