@@ -5,6 +5,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
+import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -63,6 +65,16 @@ public class Comment {
     this.content = content;
   }
 
+  public void checkPassword(String password) {
+    if (!Objects.equals(this.password, password)) {
+      throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
+    }
+  }
+
+  public void update(String content) {
+    this.content = content;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj == this) {
@@ -78,5 +90,4 @@ public class Comment {
   public int hashCode() {
     return Objects.hash(this.id);
   }
-
 }
