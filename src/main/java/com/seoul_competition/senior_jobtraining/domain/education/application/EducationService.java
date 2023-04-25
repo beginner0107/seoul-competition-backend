@@ -5,11 +5,14 @@ import com.seoul_competition.senior_jobtraining.domain.education.application.con
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.SeniorApi;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +27,16 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
-  public EducationListResponse findAll() {
-    return new EducationListResponse(entityToResponse());
+  public EducationListResponse findAll(Pageable pageable) {
+    Page<Education> educationPage = educationRepository.findAll(pageable);
+
+    return new EducationListResponse(entityToResponse(educationPage),
+        educationPage.getTotalPages() - 1,
+        pageable.getPageNumber());
   }
 
-  private List<EducationResponse> entityToResponse() {
-    return educationRepository.findAll().stream()
+  private List<EducationResponse> entityToResponse(Page<Education> educationPage) {
+    return educationPage.getContent().stream()
         .map(EducationResponse::new)
         .collect(Collectors.toList());
   }
