@@ -4,12 +4,14 @@ import com.seoul_competition.senior_jobtraining.domain.post.application.PostServ
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSaveReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
-import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostResDto;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,10 +39,10 @@ public class PostController {
   }
 
   @GetMapping
-  public ResponseEntity<List<PostResDto>> getPosts(@RequestParam(defaultValue = "1") int page,
-      @RequestParam(defaultValue = "20") int size) {
-    List<PostResDto> posts = postService.getPosts(page - 1, size);
-    return ResponseEntity.ok(posts);
+  public ResponseEntity<PostListResponse> getPosts(
+      @PageableDefault(size = 20, sort = "createdAt", direction = Direction.DESC)
+      Pageable pageable) {
+    return ResponseEntity.ok(postService.getPosts(pageable));
   }
 
 

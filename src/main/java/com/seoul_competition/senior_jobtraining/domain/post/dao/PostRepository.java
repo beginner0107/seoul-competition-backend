@@ -16,4 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
   @Query(value = "SELECT p FROM Post p LEFT JOIN FETCH p.comments ORDER BY p.createdAt DESC",
       countQuery = "SELECT count(p) FROM Post p")
   List<Post> findAllWithComments(Pageable pageable);
+
+  @Query("SELECT count(p) FROM Post p")
+  int getTotalCount();
 }

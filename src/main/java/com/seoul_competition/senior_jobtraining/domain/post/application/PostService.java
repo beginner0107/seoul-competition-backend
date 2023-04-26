@@ -4,14 +4,18 @@ import com.seoul_competition.senior_jobtraining.domain.post.dao.PostRepository;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSaveReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,10 +63,21 @@ public class PostService {
     postRepository.delete(post);
   }
 
-  public List<PostResDto> getPosts(int page, int size) {
-    List<Post> posts = postRepository.findAllWithComments(PageRequest.of(page, size));
-    return posts.stream()
-        .map(PostResDto::of)
+  public PostListResponse getPosts(Pageable pageable) {
+    if (pageable.getPageNumber() <= 0) {
+      throw new BusinessException(ErrorCode.PAGE_NOT_FOUND);
+    }
+    pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(),
+        pageable.getSort());
+    Page<Post> postPage = postRepository.findAll(pageable);
+    List<PostResDto> posts = postPage.getContent().stream().map(PostResDto::of)
         .collect(Collectors.toList());
+    return new PostListResponse(posts, postPage.getTotalPages(), postPage.getNumber() + 1);
   }
+
+  public int getTotalPages(int size) {
+    int totalCount = postRepository.getTotalCount();
+    return (int) Math.ceil((double) totalCount / size);
+  }
+
 }
