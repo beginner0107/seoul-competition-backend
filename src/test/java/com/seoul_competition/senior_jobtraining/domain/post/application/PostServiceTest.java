@@ -9,10 +9,9 @@ import static org.mockito.BDDMockito.then;
 import com.seoul_competition.senior_jobtraining.domain.post.dao.PostRepository;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
-import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostResDto;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
 import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +19,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,15 +36,19 @@ class PostServiceTest {
   @Test
   void givenNoSearchParameters_whenSearchingPosts_thenReturnPostPage() {
     // Given
-    Pageable pageable = Pageable.ofSize(20);
-    given(postRepository.findAllWithComments(pageable)).willReturn(List.of());
+    Pageable pageable = PageRequest.of(1, 20);
+    PageRequest pageable2 = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+    given(postRepository.findAll(
+        pageable2)).willReturn(
+        Page.empty());
 
     // When
-    List<PostResDto> posts = postService.getPosts(0, 20);
+    PostListResponse posts;
+    posts = postService.getPosts(pageable);
 
     // Then
-    assertThat(posts).isEmpty();
-    then(postRepository).should().findAllWithComments(pageable);
+    assertThat(posts.getData()).isEmpty();
+    then(postRepository).should().findAll(pageable2);
   }
 
   @DisplayName("게시글 ID로 조회하면, 댓글 달린 게시글을 반환한다.")
