@@ -8,6 +8,12 @@ group = 'com.seoul_competition'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+bootJar {
+    archivesBaseName = 'app'
+    archiveFileName = 'app.jar'
+    archiveVersion = '0.0.0'
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
