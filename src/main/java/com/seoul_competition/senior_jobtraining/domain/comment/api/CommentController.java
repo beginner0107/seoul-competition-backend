@@ -4,6 +4,7 @@ import com.seoul_competition.senior_jobtraining.domain.comment.application.Comme
 import com.seoul_competition.senior_jobtraining.domain.comment.dto.request.CommentSaveReqDto;
 import com.seoul_competition.senior_jobtraining.domain.comment.dto.request.CommentUpdateReqDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "댓글", description = "댓글에 대한 API입니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/comments")
