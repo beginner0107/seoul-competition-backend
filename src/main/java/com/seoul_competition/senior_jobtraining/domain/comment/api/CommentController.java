@@ -3,6 +3,7 @@ package com.seoul_competition.senior_jobtraining.domain.comment.api;
 import com.seoul_competition.senior_jobtraining.domain.comment.application.CommentService;
 import com.seoul_competition.senior_jobtraining.domain.comment.dto.request.CommentSaveReqDto;
 import com.seoul_competition.senior_jobtraining.domain.comment.dto.request.CommentUpdateReqDto;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class CommentController {
 
   private final CommentService commentService;
 
+  @Operation(summary = "댓글 작성", description = "댓글을 작성합니다.")
   @PostMapping
   public ResponseEntity<Void> createComment(
       @RequestBody @Valid CommentSaveReqDto reqDto
@@ -32,6 +34,7 @@ public class CommentController {
         .build();
   }
 
+  @Operation(summary = "댓글 수정", description = "댓글을 수정합니다.")
   @PutMapping("/{commentId}")
   public ResponseEntity<Void> updateComment(
       @RequestBody @Valid CommentUpdateReqDto reqDto,
@@ -42,6 +45,7 @@ public class CommentController {
         .build();
   }
 
+  @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
   @DeleteMapping("/{commentId}")
   public ResponseEntity<Void> deleteComment(@PathVariable Long commentId,
       @RequestBody Map<String, String> password) {
