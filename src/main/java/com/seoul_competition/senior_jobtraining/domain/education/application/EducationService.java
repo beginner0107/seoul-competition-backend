@@ -3,14 +3,16 @@ package com.seoul_competition.senior_jobtraining.domain.education.application;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationFiftyService;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationSeniorService;
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationSearchListResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.SeniorApi;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class EducationService {
 
   private final EducationRepository educationRepository;
@@ -27,22 +30,30 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
-  public EducationListResponse findAllByPage(Pageable pageable) {
+  public EducationListPageResponse findAllByPage(Pageable pageable) {
     Page<Education> educationPage = educationRepository.findAll(pageable);
 
-    return new EducationListResponse(entityToResponse(educationPage),
-        educationPage.getTotalPages() - 1,
-        pageable.getPageNumber());
+    return new EducationListPageResponse(entityToResponse(educationPage),
+        educationPage.getTotalPages() - 1, pageable.getPageNumber());
   }
 
   private List<EducationResponse> entityToResponse(Page<Education> educationPage) {
-    return educationPage.getContent().stream()
-        .map(EducationResponse::new)
+    return educationPage.getContent().stream().map(EducationResponse::new)
         .collect(Collectors.toList());
   }
 
   public EducationResponse findById(Long id) {
     return new EducationResponse(educationRepository.findById(id).get());
+  }
+
+  public EducationSearchListResponse findAllByName(String name) {
+    List<Education> orderByStateDesc = educationRepository.findByNameContainingOrderByStateDesc(
+        name);
+
+    return new EducationSearchListResponse(
+        orderByStateDesc.stream()
+            .map(EducationResponse::new)
+            .collect(Collectors.toList()), orderByStateDesc.size());
   }
 
   @Transactional
