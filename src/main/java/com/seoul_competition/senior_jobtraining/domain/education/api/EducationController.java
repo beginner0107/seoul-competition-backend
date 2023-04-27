@@ -30,7 +30,7 @@ public class EducationController {
       educationService.saveAll();
       first = false;
     }
-    EducationListResponse response = educationService.findAll(pageable);
+    EducationListResponse response = educationService.findAllByPage(pageable);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 

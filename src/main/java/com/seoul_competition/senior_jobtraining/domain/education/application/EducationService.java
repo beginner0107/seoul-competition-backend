@@ -27,7 +27,7 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
-  public EducationListResponse findAll(Pageable pageable) {
+  public EducationListResponse findAllByPage(Pageable pageable) {
     Page<Education> educationPage = educationRepository.findAll(pageable);
 
     return new EducationListResponse(entityToResponse(educationPage),
