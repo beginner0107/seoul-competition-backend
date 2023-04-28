@@ -5,7 +5,6 @@ import com.seoul_competition.senior_jobtraining.domain.education.application.con
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationSearchListResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.SeniorApi;
 import java.util.List;
@@ -35,6 +34,14 @@ public class EducationService {
         educationPage.getTotalPages() - 1, pageable.getPageNumber());
   }
 
+  public EducationListPageResponse findAllByName(Pageable pageable, String name) {
+    Page<Education> educationPage = educationRepository.findByNameContainingOrderByStateDesc(
+        pageable, name);
+
+    return new EducationListPageResponse(entityToResponse(educationPage),
+        educationPage.getTotalPages() - 1, pageable.getPageNumber());
+  }
+
   private List<EducationResponse> entityToResponse(Page<Education> educationPage) {
     return educationPage.getContent().stream().map(EducationResponse::new)
         .collect(Collectors.toList());
@@ -44,15 +51,6 @@ public class EducationService {
     return new EducationResponse(educationRepository.findById(id).get());
   }
 
-  public EducationSearchListResponse findAllByName(String name) {
-    List<Education> orderByStateDesc = educationRepository.findByNameContainingOrderByStateDesc(
-        name);
-
-    return new EducationSearchListResponse(
-        orderByStateDesc.stream()
-            .map(EducationResponse::new)
-            .collect(Collectors.toList()), orderByStateDesc.size());
-  }
 
   @Transactional
   public void saveAll() {
