@@ -63,17 +63,23 @@ public class PostService {
     postRepository.delete(post);
   }
 
-  public PostListResponse getPosts(Pageable pageable) {
+  public PostListResponse getPosts(Pageable pageable, String searchTerm) {
     if (pageable.getPageNumber() <= 0) {
       throw new BusinessException(ErrorCode.PAGE_NOT_FOUND);
     }
     pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(),
         pageable.getSort());
-    Page<Post> postPage = postRepository.findAll(pageable);
+    Page<Post> postPage;
+    if (searchTerm != null && !searchTerm.isEmpty()) {
+      postPage = postRepository.findByTitleOrContent(searchTerm, pageable);
+    } else {
+      postPage = postRepository.findAll(pageable);
+    }
     List<PostResDto> posts = postPage.getContent().stream().map(PostResDto::of)
         .collect(Collectors.toList());
     return new PostListResponse(posts, postPage.getTotalPages(), postPage.getNumber() + 1);
   }
+
 
   public int getTotalPages(int size) {
     int totalCount = postRepository.getTotalCount();

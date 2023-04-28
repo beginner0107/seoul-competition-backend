@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "게시글", description = "게시글에 대한 API입니다.")
@@ -45,9 +46,10 @@ public class PostController {
   @Operation(summary = "게시글 목록 조회", description = "페이징 처리된 게시글 목록을 조회합니다.")
   @GetMapping
   public ResponseEntity<PostListResponse> getPosts(
+      @RequestParam(name = "name", required = false) String searchValue,
       @PageableDefault(size = 20, sort = "createdAt", direction = Direction.DESC)
       Pageable pageable) {
-    return ResponseEntity.ok(postService.getPosts(pageable));
+    return ResponseEntity.ok(postService.getPosts(pageable, searchValue));
   }
 
 
