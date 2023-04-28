@@ -41,10 +41,11 @@ class PostServiceTest {
     given(postRepository.findAll(
         pageable2)).willReturn(
         Page.empty());
+    String searchValue = null;
 
     // When
     PostListResponse posts;
-    posts = postService.getPosts(pageable);
+    posts = postService.getPosts(pageable, searchValue);
 
     // Then
     assertThat(posts.getData()).isEmpty();
