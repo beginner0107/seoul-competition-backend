@@ -64,11 +64,9 @@ public class PostService {
   }
 
   public PostListResponse getPosts(Pageable pageable, String searchTerm) {
-    if (pageable.getPageNumber() <= 0) {
+    if (pageable.getPageNumber() < 0) {
       throw new BusinessException(ErrorCode.PAGE_NOT_FOUND);
     }
-    pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(),
-        pageable.getSort());
     Page<Post> postPage;
     if (searchTerm != null && !searchTerm.isEmpty()) {
       postPage = postRepository.findByTitleOrContent(searchTerm, pageable);
