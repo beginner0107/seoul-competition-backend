@@ -36,11 +36,9 @@ class PostServiceTest {
   @Test
   void givenNoSearchParameters_whenSearchingPosts_thenReturnPostPage() {
     // Given
-    Pageable pageable = PageRequest.of(1, 20);
-    PageRequest pageable2 = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+    Pageable pageable = PageRequest.of(0, 20);
     given(postRepository.findAll(
-        pageable2)).willReturn(
-        Page.empty());
+        pageable)).willReturn(Page.empty());
     String searchValue = null;
 
     // When
@@ -49,14 +47,14 @@ class PostServiceTest {
 
     // Then
     assertThat(posts.getData()).isEmpty();
-    then(postRepository).should().findAll(pageable2);
+    then(postRepository).should().findAll(pageable);
   }
 
   @DisplayName("게시글 ID로 조회하면, 댓글 달린 게시글을 반환한다.")
   @Test
   void givenPostId_whenPostWithComments_thenReturnPostWithComments() {
     // Given
-    Long postId = 1L;
+    Long postId = 0L;
     Post post = createPost();
     given(postRepository.findById(postId)).willReturn(Optional.of(post));
 
