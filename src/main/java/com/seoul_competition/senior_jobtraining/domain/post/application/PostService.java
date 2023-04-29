@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +74,7 @@ public class PostService {
     }
     List<PostResDto> posts = postPage.getContent().stream().map(PostResDto::of)
         .collect(Collectors.toList());
-    return new PostListResponse(posts, postPage.getTotalPages(), postPage.getNumber() + 1);
+    return new PostListResponse(posts, postPage.getTotalPages() - 1, postPage.getNumber());
   }
 
 
