@@ -63,18 +63,24 @@ public class PostService {
   }
 
   public PostListResponse getPosts(Pageable pageable, String searchTerm) {
-    if (pageable.getPageNumber() < 0) {
-      throw new BusinessException(ErrorCode.PAGE_NOT_FOUND);
-    }
     Page<Post> postPage;
     if (searchTerm != null && !searchTerm.isEmpty()) {
       postPage = postRepository.findByTitleOrContent(searchTerm, pageable);
     } else {
       postPage = postRepository.findAll(pageable);
     }
+
+    checkPageNumber(pageable, postPage);
+
     List<PostResDto> posts = postPage.getContent().stream().map(PostResDto::of)
         .collect(Collectors.toList());
     return new PostListResponse(posts, postPage.getTotalPages() - 1, postPage.getNumber());
+  }
+
+  private void checkPageNumber(Pageable pageable, Page<Post> postPage) {
+    if (pageable.getPageNumber() >= postPage.getTotalPages()) {
+      throw new BusinessException(ErrorCode.PAGE_NOT_FOUND);
+    }
   }
 
 
