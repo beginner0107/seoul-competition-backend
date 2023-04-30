@@ -61,4 +61,8 @@ public class Education {
     this.educationEnd = educationEnd;
     this.views = views;
   }
+
+  public void viewPlus() {
+    this.views++;
+  }
 }

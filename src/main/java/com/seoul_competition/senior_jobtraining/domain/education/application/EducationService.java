@@ -59,8 +59,11 @@ public class EducationService {
         .collect(Collectors.toList());
   }
 
+  @Transactional
   public EducationResponse findById(Long id) {
-    return new EducationResponse(educationRepository.findById(id).get());
+    Education findEducation = educationRepository.findById(id).get();
+    findEducation.viewPlus();
+    return new EducationResponse(findEducation);
   }
 
 
