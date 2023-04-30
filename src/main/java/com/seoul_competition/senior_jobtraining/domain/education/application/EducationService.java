@@ -6,6 +6,8 @@ import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRe
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
+import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.SeniorApi;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +32,8 @@ public class EducationService {
   public EducationListPageResponse findAllByPage(Pageable pageable) {
     Page<Education> educationPage = educationRepository.findAll(pageable);
 
+    checkPageNumber(pageable, educationPage);
+
     return new EducationListPageResponse(entityToResponse(educationPage),
         educationPage.getTotalPages() - 1, pageable.getPageNumber());
   }
@@ -38,8 +42,16 @@ public class EducationService {
     Page<Education> educationPage = educationRepository.findByNameContainingOrderByStateDesc(
         pageable, name);
 
+    checkPageNumber(pageable, educationPage);
+
     return new EducationListPageResponse(entityToResponse(educationPage),
         educationPage.getTotalPages() - 1, pageable.getPageNumber());
+  }
+
+  private void checkPageNumber(Pageable pageable, Page<Education> educationPage) {
+    if (pageable.getPageNumber() >= educationPage.getTotalPages()) {
+      throw new BusinessException(ErrorCode.PAGE_NOT_FOUND);
+    }
   }
 
   private List<EducationResponse> entityToResponse(Page<Education> educationPage) {
