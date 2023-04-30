@@ -17,6 +17,7 @@ public class EducationResponse {
   private String educationStart;
   private String educationEnd;
   private String url;
+  private Long views;
 
   public EducationResponse(Education education) {
     this.id = education.getId();
@@ -29,6 +30,7 @@ public class EducationResponse {
     this.registerEnd = education.getRegisterEnd();
     this.educationStart = education.getEducationStart();
     this.educationEnd = education.getEducationEnd();
+    this.views = education.getViews();
   }
 
 }
