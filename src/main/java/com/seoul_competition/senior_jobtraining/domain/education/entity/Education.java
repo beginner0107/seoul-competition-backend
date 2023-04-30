@@ -42,10 +42,14 @@ public class Education {
   @Column(name = "education_end", nullable = false)
   private String educationEnd;
 
+  @Column(name = "vews", nullable = false)
+  private Long views;
+
   @Builder
   public Education(String name, String state, String url, int price, int capacity,
       String registerStart, String registerEnd, String educationStart,
-      String educationEnd) {
+      String educationEnd, Long views) {
+
     this.name = name;
     this.state = state;
     this.url = url;
@@ -55,5 +59,10 @@ public class Education {
     this.registerEnd = registerEnd;
     this.educationStart = educationStart;
     this.educationEnd = educationEnd;
+    this.views = views;
+  }
+
+  public void viewPlus() {
+    this.views++;
   }
 }

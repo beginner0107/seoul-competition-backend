@@ -54,6 +54,7 @@ public class EducationFiftyService {
           .registerEnd((String) jsonObject.get("REG_EDDE"))
           .educationStart((String) jsonObject.get("CR_STDE"))
           .educationEnd((String) jsonObject.get("CR_EDDE"))
+          .views(0L)
           .build();
       educationRepository.save(education);
     }
