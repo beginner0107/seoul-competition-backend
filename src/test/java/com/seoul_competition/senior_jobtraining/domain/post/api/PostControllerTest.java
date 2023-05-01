@@ -91,7 +91,8 @@ class PostControllerTest {
   void givenUpdatedPostInfo_whenRequesting_thenUpdateNewPost() throws Exception {
     // Given
     long postId = 1L;
-    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("1234", "title수정", "content수정");
+    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname수정", "1234", "title수정",
+        "content수정");
     String requestBody = om.writeValueAsString(postUpdateReqDto);
 
     // When
@@ -108,7 +109,8 @@ class PostControllerTest {
   void givenUpdatedPostInfo_whenRequesting_thenThrowBusinessException() throws Exception {
     // Given
     long postId = 1L;
-    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("1249120", "title수정", "content수정");
+    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname", "1249120", "title수정",
+        "content수정");
     String requestBody = om.writeValueAsString(postUpdateReqDto);
 
     // When

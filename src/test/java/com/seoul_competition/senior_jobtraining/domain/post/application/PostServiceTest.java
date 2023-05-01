@@ -75,14 +75,16 @@ class PostServiceTest {
   void givenModifiedPostInfo_whenUpdatingPost_thenUpdatesPost() {
     // Given
     Post post = createPost();
-    PostUpdateReqDto dto = createPostUpdateReqDto("1234", "새 타이틀", "새 내용");
+    PostUpdateReqDto dto = createPostUpdateReqDto("nickname", "1234", "새 타이틀", "새 내용");
     given(postRepository.findById(anyLong())).willReturn(Optional.ofNullable(post));
 
     // When
     postService.update(1L, dto);
 
     // Then
-    assertThat(post).hasFieldOrPropertyWithValue("title", dto.title())
+    assertThat(post)
+        .hasFieldOrPropertyWithValue("nickname", dto.nickname())
+        .hasFieldOrPropertyWithValue("title", dto.title())
         .hasFieldOrPropertyWithValue("content", dto.content());
     then(postRepository).should().findById(1L);
   }
@@ -103,8 +105,9 @@ class PostServiceTest {
   }
 
 
-  private PostUpdateReqDto createPostUpdateReqDto(String pw, String title, String content) {
-    return PostUpdateReqDto.of(pw, title, content);
+  private PostUpdateReqDto createPostUpdateReqDto(String nickname, String pw, String title,
+      String content) {
+    return PostUpdateReqDto.of(nickname, pw, title, content);
   }
 
   private Post createPost() {
