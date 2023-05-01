@@ -86,7 +86,8 @@ public class Post {
     }
   }
 
-  public void update(String title, String content) {
+  public void update(String nickname, String title, String content) {
+    this.nickname = nickname;
     this.title = title;
     this.content = content;
   }

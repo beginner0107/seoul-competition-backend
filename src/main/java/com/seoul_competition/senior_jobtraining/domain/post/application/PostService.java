@@ -50,7 +50,7 @@ public class PostService {
             ErrorCode.POST_NOT_EXISTS));
     post.checkPassword(reqDto.password());
 
-    post.update(reqDto.title(), reqDto.content());
+    post.update(reqDto.nickname(), reqDto.title(), reqDto.content());
   }
 
   @Transactional
