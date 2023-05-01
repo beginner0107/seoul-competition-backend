@@ -1,12 +1,17 @@
 package com.seoul_competition.senior_jobtraining.domain.education.entity;
 
+import com.seoul_competition.senior_jobtraining.domain.review.entity.Review;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.lang.String;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +49,9 @@ public class Education {
 
   @Column(name = "vews", nullable = false)
   private Long views;
+
+  @OneToMany(mappedBy = "education", cascade = CascadeType.REMOVE)
+  private List<Review> reviews = new ArrayList<>();
 
   @Builder
   public Education(String name, String state, String url, int price, int capacity,
