@@ -35,7 +35,7 @@ public class EducationSeniorService {
           .registerEnd(((String) jsonObject.get("APPLICATIONENDDATE")).replaceAll("-", "."))
           .educationStart(((String) jsonObject.get("STARTDATE")).replaceAll("-", "."))
           .educationEnd(((String) jsonObject.get("ENDDATE")).replaceAll("-", "."))
-          .views(0L)
+          .hits(0L)
           .build();
       educationRepository.save(education);
     }

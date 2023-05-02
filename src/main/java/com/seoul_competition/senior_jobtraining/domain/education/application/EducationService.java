@@ -62,7 +62,7 @@ public class EducationService {
   @Transactional
   public EducationResponse findById(Long id) {
     Education findEducation = educationRepository.findById(id).get();
-    findEducation.viewPlus();
+    findEducation.hitsPlus();
     return new EducationResponse(findEducation);
   }
 

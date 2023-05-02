@@ -47,8 +47,8 @@ public class Education {
   @Column(name = "education_end", nullable = false)
   private String educationEnd;
 
-  @Column(name = "vews", nullable = false)
-  private Long views;
+  @Column(name = "hits", nullable = false)
+  private Long hits;
 
   @OneToMany(mappedBy = "education", cascade = CascadeType.REMOVE)
   private List<Review> reviews = new ArrayList<>();
@@ -56,7 +56,7 @@ public class Education {
   @Builder
   public Education(String name, String state, String url, int price, int capacity,
       String registerStart, String registerEnd, String educationStart,
-      String educationEnd, Long views) {
+      String educationEnd, Long hits) {
 
     this.name = name;
     this.state = state;
@@ -67,10 +67,10 @@ public class Education {
     this.registerEnd = registerEnd;
     this.educationStart = educationStart;
     this.educationEnd = educationEnd;
-    this.views = views;
+    this.hits = hits;
   }
 
-  public void viewPlus() {
-    this.views++;
+  public void hitsPlus() {
+    this.hits++;
   }
 }
