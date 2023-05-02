@@ -2,6 +2,7 @@ package com.seoul_competition.senior_jobtraining.domain.education.application.co
 
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
+import java.text.DecimalFormat;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,6 +18,7 @@ public class EducationSeniorService {
 
   private final static String BEFORE_WAITING_CONTENT = "접수중";
   private final static String AFTER_WAITING_CONTENT = "수강신청중";
+  private static DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
   @Transactional
   public void saveSenior(JSONArray infoArr) {
@@ -29,13 +31,13 @@ public class EducationSeniorService {
           .name((String) jsonObject.get("SUBJECT"))
           .state(applyState)
           .url((String) jsonObject.get("VIEWDETAIL"))
-          .price(Integer.parseInt((String) jsonObject.get("REGISTCOST")))
+          .price(decimalFormat.format(Integer.parseInt((String) jsonObject.get("REGISTCOST"))))
           .capacity(Integer.parseInt((String) jsonObject.get("REGISTPEOPLE")))
           .registerStart(((String) jsonObject.get("APPLICATIONSTARTDATE")).replaceAll("-", "."))
           .registerEnd(((String) jsonObject.get("APPLICATIONENDDATE")).replaceAll("-", "."))
           .educationStart(((String) jsonObject.get("STARTDATE")).replaceAll("-", "."))
           .educationEnd(((String) jsonObject.get("ENDDATE")).replaceAll("-", "."))
-          .views(0L)
+          .hits(0L)
           .build();
       educationRepository.save(education);
     }

@@ -10,14 +10,15 @@ public class EducationResponse {
   private Long id;
   private String name;
   private String state;
-  private int price;
+
+  private String price;
   private int capacity;
   private String registerStart;
   private String registerEnd;
   private String educationStart;
   private String educationEnd;
   private String url;
-  private Long views;
+  private Long hits;
 
   public EducationResponse(Education education) {
     this.id = education.getId();
@@ -30,7 +31,7 @@ public class EducationResponse {
     this.registerEnd = education.getRegisterEnd();
     this.educationStart = education.getEducationStart();
     this.educationEnd = education.getEducationEnd();
-    this.views = education.getViews();
+    this.hits = education.getHits();
   }
 
 }
