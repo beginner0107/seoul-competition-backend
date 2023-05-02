@@ -4,6 +4,7 @@ import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRe
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.global.error.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.FiftyApi;
+import java.text.DecimalFormat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -22,6 +23,7 @@ public class EducationFiftyService {
   private static int startPage = 0;
   private static int endPage = 999;
   private static int increaseUnit = 1000;
+  private static DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
 
   @Transactional
@@ -44,9 +46,9 @@ public class EducationFiftyService {
           .name((String) jsonObject.get("LCT_NM"))
           .state((String) jsonObject.get("LCT_STAT"))
           .url((String) jsonObject.get("CR_URL"))
-          .price(Integer.parseInt(
+          .price(decimalFormat.format(Integer.parseInt(
               (String) jsonObject.get("LCT_COST") != "" ? (String) jsonObject.get("LCT_COST")
-                  : "0"))
+                  : "0")))
           .capacity(Integer.parseInt(
               (String) jsonObject.get("CR_PPL_STAT") != "" ? (String) jsonObject.get(
                   "CR_PPL_STAT") : "0"))

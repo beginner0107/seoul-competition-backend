@@ -29,7 +29,7 @@ public class Education {
   private Long id;
 
   @Column(name = "price", nullable = false)
-  private int price;
+  private String price;
   @Column(name = "capacity", nullable = false)
   private int capacity;
   @Column(name = "name", nullable = false)
@@ -54,7 +54,7 @@ public class Education {
   private List<Review> reviews = new ArrayList<>();
 
   @Builder
-  public Education(String name, String state, String url, int price, int capacity,
+  public Education(String name, String state, String url, String price, int capacity,
       String registerStart, String registerEnd, String educationStart,
       String educationEnd, Long hits) {
 

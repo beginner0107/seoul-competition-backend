@@ -10,7 +10,8 @@ public class EducationResponse {
   private Long id;
   private String name;
   private String state;
-  private int price;
+
+  private String price;
   private int capacity;
   private String registerStart;
   private String registerEnd;
