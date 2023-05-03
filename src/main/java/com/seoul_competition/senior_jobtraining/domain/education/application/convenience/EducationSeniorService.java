@@ -38,6 +38,7 @@ public class EducationSeniorService {
           .educationStart(((String) jsonObject.get("STARTDATE")).replaceAll("-", "."))
           .educationEnd(((String) jsonObject.get("ENDDATE")).replaceAll("-", "."))
           .hits(0L)
+          .originId(Integer.parseInt((String) jsonObject.get("IDX")))
           .build();
       educationRepository.save(education);
     }

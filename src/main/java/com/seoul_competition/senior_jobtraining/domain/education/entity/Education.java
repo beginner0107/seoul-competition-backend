@@ -4,22 +4,27 @@ import com.seoul_competition.senior_jobtraining.domain.review.entity.Review;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.lang.String;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "education")
 public class Education {
 
@@ -53,10 +58,17 @@ public class Education {
   @OneToMany(mappedBy = "education", cascade = CascadeType.REMOVE)
   private List<Review> reviews = new ArrayList<>();
 
+  @CreatedDate
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
+
+  @Column(name = "origin_id", nullable = false)
+  private int originId;
+
   @Builder
   public Education(String name, String state, String url, String price, int capacity,
       String registerStart, String registerEnd, String educationStart,
-      String educationEnd, Long hits) {
+      String educationEnd, Long hits, int originId) {
 
     this.name = name;
     this.state = state;
@@ -68,6 +80,7 @@ public class Education {
     this.educationStart = educationStart;
     this.educationEnd = educationEnd;
     this.hits = hits;
+    this.originId = originId;
   }
 
   public void hitsPlus() {

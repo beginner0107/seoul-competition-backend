@@ -57,6 +57,7 @@ public class EducationFiftyService {
           .educationStart((String) jsonObject.get("CR_STDE"))
           .educationEnd((String) jsonObject.get("CR_EDDE"))
           .hits(0L)
+          .originId(Integer.parseInt((String) jsonObject.get("LCT_NO")))
           .build();
       educationRepository.save(education);
     }
