@@ -69,7 +69,7 @@ class PostControllerTest {
   }
 
 
-  @DisplayName("[POST] 댓글 등록 - 정상호출")
+  @DisplayName("[POST] 게시글 등록 - 정상호출")
   @Test
   void givenPostInfo_whenRequesting_thenSavePost() throws Exception {
     // Given
@@ -86,7 +86,7 @@ class PostControllerTest {
     resultActions.andExpect(status().isCreated());
   }
 
-  @DisplayName("[PUT] 댓글 수정 - 정상 호출")
+  @DisplayName("[PUT] 게시글 수정 - 정상 호출")
   @Test
   void givenUpdatedPostInfo_whenRequesting_thenUpdateNewPost() throws Exception {
     // Given
@@ -104,7 +104,7 @@ class PostControllerTest {
     resultActions.andExpect(status().isCreated());
   }
 
-  @DisplayName("[PUT] 댓글 수정 - 비밀번호 불일치")
+  @DisplayName("[PUT] 게시글 수정 - 비밀번호 불일치")
   @Test
   void givenUpdatedPostInfo_whenRequesting_thenThrowBusinessException() throws Exception {
     // Given
