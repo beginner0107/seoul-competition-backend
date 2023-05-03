@@ -62,10 +62,13 @@ public class Education {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
+  @Column(name = "origin_id", nullable = false)
+  private int originId;
+
   @Builder
   public Education(String name, String state, String url, String price, int capacity,
       String registerStart, String registerEnd, String educationStart,
-      String educationEnd, Long hits) {
+      String educationEnd, Long hits, int originId) {
 
     this.name = name;
     this.state = state;
@@ -77,6 +80,7 @@ public class Education {
     this.educationStart = educationStart;
     this.educationEnd = educationEnd;
     this.hits = hits;
+    this.originId = originId;
   }
 
   public void hitsPlus() {
