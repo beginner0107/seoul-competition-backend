@@ -12,6 +12,11 @@ public record CommentSaveReqDto(
     @NotBlank(message = "댓글을 입력해주세요.") String content
 ) {
 
+  public static CommentSaveReqDto of(Long postId, String nickname, String password,
+      String content) {
+    return new CommentSaveReqDto(postId, nickname, password, content);
+  }
+
   public Comment toEntity(Post post) {
     return Comment.builder()
         .post(post)

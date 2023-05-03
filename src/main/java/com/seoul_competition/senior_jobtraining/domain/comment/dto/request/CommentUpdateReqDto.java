@@ -8,4 +8,7 @@ public record CommentUpdateReqDto(
     @NotBlank(message = "비밀번호를 입력해주세요.") String password,
     @NotBlank(message = "내용이 비어있습니다.") String content) {
 
+  public static CommentUpdateReqDto of(long postId, String password, String updatedContent) {
+    return new CommentUpdateReqDto(postId, password, updatedContent);
+  }
 }
