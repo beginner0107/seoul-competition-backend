@@ -91,7 +91,7 @@ class PostControllerTest {
   void givenUpdatedPostInfo_whenRequesting_thenUpdateNewPost() throws Exception {
     // Given
     long postId = 1L;
-    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname수정", "1234", "title수정",
+    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname수정", "title수정",
         "content수정");
     String requestBody = om.writeValueAsString(postUpdateReqDto);
 
@@ -109,13 +109,13 @@ class PostControllerTest {
   void givenUpdatedPostInfo_whenRequesting_thenThrowBusinessException() throws Exception {
     // Given
     long postId = 1L;
-    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname", "1249120", "title수정",
+    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname", "title수정",
         "content수정");
-    String requestBody = om.writeValueAsString(postUpdateReqDto);
+    String requestBody = om.writeValueAsString(Map.of("password", "123123123"));
 
     // When
     ResultActions resultActions = mvc.perform(
-        put("/api/v1/posts/" + postId).content(requestBody)
+        post("/api/v1/posts/" + postId + "/matchCheck").content(requestBody)
             .contentType(MediaType.APPLICATION_JSON));
 
     // Then

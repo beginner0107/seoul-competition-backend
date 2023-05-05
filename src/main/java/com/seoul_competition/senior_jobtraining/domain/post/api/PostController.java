@@ -52,7 +52,6 @@ public class PostController {
     return ResponseEntity.ok(postService.getPosts(pageable, searchValue));
   }
 
-
   @Operation(summary = "게시글 상세 조회", description = "특정 게시글의 상세 정보를 조회합니다.")
   @GetMapping("/{postId}")
   public ResponseEntity<PostDetailResDto> getPost(@PathVariable Long postId) {
@@ -76,6 +75,14 @@ public class PostController {
   public ResponseEntity<Void> deletePost(@PathVariable Long postId,
       @RequestBody Map<String, String> password) {
     postService.delete(postId, password.get("password"));
+    return ResponseEntity.noContent().build();
+  }
+
+  @Operation(summary = "비밀번호 일치 체크", description = "비밀번호가 일치하는지 확인합니다.")
+  @PostMapping("/{postId}/matchCheck")
+  public ResponseEntity<Void> matchCheck(@PathVariable Long postId,
+      @RequestBody Map<String, String> password) {
+    postService.matchCheck(postId, password.get("password"));
     return ResponseEntity.noContent().build();
   }
 }
