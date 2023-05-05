@@ -7,8 +7,10 @@ import com.seoul_competition.senior_jobtraining.domain.comment.entity.Comment;
 import com.seoul_competition.senior_jobtraining.domain.post.dao.PostRepository;
 import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +31,12 @@ public class CommentService {
 
   @Transactional
   public void update(Long commentId, CommentUpdateReqDto reqDto) {
-    postRepository.findById(reqDto.postId())
-        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_EXISTS));
 
     Comment comment = commentRepository.findById(commentId)
         .orElseThrow(() -> new EntityNotFoundException(
             ErrorCode.COMMENT_NOT_EXISTS));
-    comment.checkPassword(reqDto.password());
 
+    comment.checkPassword(reqDto.password());
     comment.update(reqDto.content());
   }
 
@@ -46,5 +46,15 @@ public class CommentService {
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.COMMENT_NOT_EXISTS));
     comment.checkPassword(password);
     commentRepository.delete(comment);
+  }
+
+  public void matchCheck(Long commentId, String password) {
+    if (StringUtils.isBlank(password)) {
+      throw new BusinessException(ErrorCode.PASSWORD_EMPTY);
+    }
+    Comment comment = commentRepository.findById(commentId).orElseThrow(
+        () -> new EntityNotFoundException(
+            ErrorCode.COMMENT_NOT_EXISTS));
+    comment.checkPassword(password);
   }
 }

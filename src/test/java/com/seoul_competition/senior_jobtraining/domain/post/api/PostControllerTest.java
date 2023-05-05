@@ -91,7 +91,7 @@ class PostControllerTest {
   void givenUpdatedPostInfo_whenRequesting_thenUpdateNewPost() throws Exception {
     // Given
     long postId = 1L;
-    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname수정", "title수정",
+    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname수정", "1234", "title수정",
         "content수정");
     String requestBody = om.writeValueAsString(postUpdateReqDto);
 
@@ -104,14 +104,14 @@ class PostControllerTest {
     resultActions.andExpect(status().isCreated());
   }
 
-  @DisplayName("[PUT] 게시글 수정 - 비밀번호 불일치")
+  @DisplayName("[POST] 게시글 수정 - 비밀번호 불일치")
   @Test
   void givenUpdatedPostInfo_whenRequesting_thenThrowBusinessException() throws Exception {
     // Given
     long postId = 1L;
-    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname", "title수정",
+    PostUpdateReqDto postUpdateReqDto = new PostUpdateReqDto("nickname", "123123123", "title수정",
         "content수정");
-    String requestBody = om.writeValueAsString(Map.of("password", "123123123"));
+    String requestBody = om.writeValueAsString(Map.of("password", postUpdateReqDto.password()));
 
     // When
     ResultActions resultActions = mvc.perform(

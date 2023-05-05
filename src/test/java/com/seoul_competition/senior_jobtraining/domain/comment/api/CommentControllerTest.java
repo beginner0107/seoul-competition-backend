@@ -100,7 +100,7 @@ class CommentControllerTest {
   void givenCommentInfo_whenUpdating_thenUpdatesComment() throws Exception {
     // given
     Long commentId = 1L;
-    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of(1L, "1234", "updated content");
+    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("1234", "updated content");
 
     // when
     ResultActions resultActions = mvc.perform(put("/api/v1/comments/" + commentId, 1L)
@@ -111,33 +111,18 @@ class CommentControllerTest {
     resultActions.andExpect(status().isCreated());
   }
 
-  @DisplayName("[PUT] 댓글 수정 - 실패: 존재하지 않는 게시물")
-  @Test
-  void givenNonExistentPostId_whenUpdating_thenReturnsBadRequest() throws Exception {
-    // given
-    Long commentId = 1L;
-    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of(999L, "1234", "updated content");
-
-    // when
-    ResultActions resultActions = mvc.perform(put("/api/v1/comments/" + commentId, 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(new ObjectMapper().writeValueAsString(reqDto)));
-
-    // then
-    resultActions.andExpect(status().isBadRequest());
-  }
-
   @DisplayName("[PUT] 댓글 수정 - 실패: 올바르지 않은 비밀번호")
   @Test
   void givenIncorrectPassword_whenUpdating_thenReturnsBadRequest() throws Exception {
     // given
     Long commentId = 1L;
-    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of(1L, "incorrectpassword", "updated content");
+    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("incorrectpassword", "updated content");
 
     // when
-    ResultActions resultActions = mvc.perform(put("/api/v1/comments/" + commentId, 1L)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(new ObjectMapper().writeValueAsString(reqDto)));
+    ResultActions resultActions = mvc.perform(
+        post("/api/v1/comments/" + commentId + "/matchCheck", 1L)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(reqDto)));
 
     // then
     resultActions.andExpect(status().isBadRequest());
