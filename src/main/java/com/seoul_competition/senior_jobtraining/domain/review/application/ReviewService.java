@@ -8,7 +8,6 @@ import com.seoul_competition.senior_jobtraining.domain.review.dto.request.Review
 import com.seoul_competition.senior_jobtraining.domain.review.entity.Review;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
 import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,5 +41,14 @@ public class ReviewService {
     review.checkPassword(reqDto.password());
 
     review.update(reqDto.content());
+  }
+
+  public void delete(Long reviewId, String password) {
+    Review review = reviewRepository.findById(reviewId)
+        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS));
+    System.out.println(password);
+    review.checkPassword(password);
+    reviewRepository.delete(review);
+
   }
 }
