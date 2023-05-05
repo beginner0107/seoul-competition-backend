@@ -2,13 +2,18 @@ package com.seoul_competition.senior_jobtraining.domain.review.api;
 
 import com.seoul_competition.senior_jobtraining.domain.review.application.ReviewService;
 import com.seoul_competition.senior_jobtraining.domain.review.dto.request.ReviewSaveReqDto;
+import com.seoul_competition.senior_jobtraining.domain.review.dto.request.ReviewUpdateReqDto;
+import com.seoul_competition.senior_jobtraining.domain.review.entity.Review;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,4 +29,10 @@ public class ReviewController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
+  @PutMapping("/{reviewId}")
+  public ResponseEntity<Void> updateReview(@RequestBody @Valid ReviewUpdateReqDto reqDto,
+      @PathVariable Long reviewId) {
+    reviewService.update(reviewId, reqDto);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
 }

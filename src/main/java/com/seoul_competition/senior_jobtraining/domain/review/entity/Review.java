@@ -1,6 +1,8 @@
 package com.seoul_competition.senior_jobtraining.domain.review.entity;
 
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
+import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -57,5 +59,13 @@ public class Review {
     this.content = content;
   }
 
+  public void checkPassword(String password) {
+    if (!password.equals(this.password)) {
+      throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
+    }
+  }
 
+  public void update(String content) {
+    this.content = content;
+  }
 }
