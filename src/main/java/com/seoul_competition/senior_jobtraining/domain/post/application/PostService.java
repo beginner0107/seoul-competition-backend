@@ -50,6 +50,8 @@ public class PostService {
         () -> new EntityNotFoundException(
             ErrorCode.POST_NOT_EXISTS));
 
+    post.checkPassword(reqDto.password());
+
     post.update(reqDto.nickname(), reqDto.title(), reqDto.content());
   }
 

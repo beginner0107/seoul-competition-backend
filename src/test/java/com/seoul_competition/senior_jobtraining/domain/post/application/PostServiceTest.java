@@ -75,7 +75,7 @@ class PostServiceTest {
   void givenModifiedPostInfo_whenUpdatingPost_thenUpdatesPost() {
     // Given
     Post post = createPost();
-    PostUpdateReqDto dto = createPostUpdateReqDto("nickname", "새 타이틀", "새 내용");
+    PostUpdateReqDto dto = createPostUpdateReqDto("nickname", "1234", "새 타이틀", "새 내용");
     given(postRepository.findById(anyLong())).willReturn(Optional.ofNullable(post));
 
     // When
@@ -105,9 +105,9 @@ class PostServiceTest {
   }
 
 
-  private PostUpdateReqDto createPostUpdateReqDto(String nickname, String title,
+  private PostUpdateReqDto createPostUpdateReqDto(String nickname, String password, String title,
       String content) {
-    return PostUpdateReqDto.of(nickname, title, content);
+    return PostUpdateReqDto.of(nickname, password, title, content);
   }
 
   private Post createPost() {
