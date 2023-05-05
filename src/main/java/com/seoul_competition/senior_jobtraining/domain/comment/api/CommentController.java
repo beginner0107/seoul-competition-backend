@@ -54,4 +54,12 @@ public class CommentController {
     commentService.delete(commentId, password.get("password"));
     return ResponseEntity.noContent().build();
   }
+
+  @Operation(summary = "비밀번호 일치", description = "비밀번호가 일치하는지 확인")
+  @PostMapping("/{commentId}/matchCheck")
+  public ResponseEntity<Void> matchCheck(@PathVariable Long commentId,
+      @RequestBody Map<String, String> password) {
+    commentService.matchCheck(commentId, password.get("password"));
+    return ResponseEntity.noContent().build();
+  }
 }
