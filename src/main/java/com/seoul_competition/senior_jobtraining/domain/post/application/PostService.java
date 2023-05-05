@@ -13,6 +13,7 @@ import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNot
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,6 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new EntityNotFoundException(
             ErrorCode.POST_NOT_EXISTS));
-    post.checkPassword(reqDto.password());
 
     post.update(reqDto.nickname(), reqDto.title(), reqDto.content());
   }
@@ -89,4 +89,13 @@ public class PostService {
     return (int) Math.ceil((double) totalCount / size);
   }
 
+  public void matchCheck(Long postId, String password) {
+    if (StringUtils.isBlank(password)) {
+      throw new BusinessException(ErrorCode.PASSWORD_EMPTY);
+    }
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new EntityNotFoundException(
+            ErrorCode.POST_NOT_EXISTS));
+    post.checkPassword(password);
+  }
 }
