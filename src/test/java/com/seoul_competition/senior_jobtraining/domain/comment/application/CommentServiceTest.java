@@ -73,9 +73,8 @@ class CommentServiceTest {
     // Given
     Long commentId = 1L;
     Comment comment = createComment(commentId, "password", "content");
-    CommentUpdateReqDto dto = createCommentUpdateReqDto(1L, "password",
+    CommentUpdateReqDto dto = createCommentUpdateReqDto("password",
         "updated content");
-    given(postRepository.findById(dto.postId())).willReturn(Optional.ofNullable(createPost()));
     given(commentRepository.findById(commentId)).willReturn(Optional.ofNullable(comment));
     Mockito.lenient().when(commentRepository.save(any(Comment.class))).thenReturn(null);
 
@@ -83,7 +82,6 @@ class CommentServiceTest {
     commentService.update(commentId, dto);
 
     // Then
-    then(postRepository).should().findById(dto.postId());
     then(commentRepository).should().findById(commentId);
     assertThat(comment.getContent()).isEqualTo(dto.content());
   }
@@ -93,9 +91,8 @@ class CommentServiceTest {
   void givenNonexistentCommentId_whenUpdatingPostComment_thenThrowsEntityNotFoundException() {
     // Given
     Long nonExistentCommentId = 999L;
-    CommentUpdateReqDto dto = createCommentUpdateReqDto(1L, "password",
+    CommentUpdateReqDto dto = createCommentUpdateReqDto("password",
         "updated content");
-    given(postRepository.findById(dto.postId())).willReturn(Optional.ofNullable(createPost()));
     given(commentRepository.findById(nonExistentCommentId)).willReturn(Optional.empty());
 
     // When, Then
@@ -109,9 +106,8 @@ class CommentServiceTest {
     // Given
     Long commentId = 1L;
     Comment comment = createComment(commentId, "password", "content");
-    CommentUpdateReqDto dto = createCommentUpdateReqDto(1L, "wrong_password",
+    CommentUpdateReqDto dto = createCommentUpdateReqDto("wrong_password",
         "updated content");
-    given(postRepository.findById(dto.postId())).willReturn(Optional.ofNullable(createPost()));
     given(commentRepository.findById(commentId)).willReturn(Optional.ofNullable(comment));
 
     // When, Then
@@ -166,9 +162,9 @@ class CommentServiceTest {
   }
 
 
-  private CommentUpdateReqDto createCommentUpdateReqDto(long postId, String password,
+  private CommentUpdateReqDto createCommentUpdateReqDto(String password,
       String updatedContent) {
-    return CommentUpdateReqDto.of(postId, password, updatedContent);
+    return CommentUpdateReqDto.of(password, updatedContent);
   }
 
   private Comment createComment(Long commentId, String password, String content) {
