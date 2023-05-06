@@ -36,7 +36,7 @@ public class EducationService {
     checkPageNumber(pageable, educationPage);
 
     return new EducationListPageResponse(entityToResponse(educationPage),
-        educationPage.getTotalPages() - 1, pageable.getPageNumber());
+        educationPage.getTotalPages() - 1, pageable.getPageNumber(), educationPage.getTotalElements());
   }
 
   public EducationListPageResponse findAllByName(Pageable pageable, String name) {
@@ -46,7 +46,7 @@ public class EducationService {
     checkPageNumber(pageable, educationPage);
 
     return new EducationListPageResponse(entityToResponse(educationPage),
-        educationPage.getTotalPages() - 1, pageable.getPageNumber());
+        educationPage.getTotalPages() - 1, pageable.getPageNumber(), educationPage.getTotalElements());
   }
 
   private void checkPageNumber(Pageable pageable, Page<Education> educationPage) {
