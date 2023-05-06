@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EducationRepository extends JpaRepository<Education, Long> {
 
-  Page<Education> findByNameContainingOrderByStateDesc(Pageable pageable, String name);
+  Page<Education> findByNameContainingOrderByStatusDesc(Pageable pageable, String name);
 }

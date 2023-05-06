@@ -27,7 +27,7 @@ public class EducationController {
 
   @GetMapping
   public ResponseEntity<EducationListPageResponse> getAllEducations(
-      @PageableDefault(sort = "state", size = 20, direction = Direction.DESC) Pageable pageable,
+      @PageableDefault(sort = "status", size = 20, direction = Direction.DESC) Pageable pageable,
       @RequestParam(value = "name", required = false) String name) {
     if (first) {
       educationService.saveAll();

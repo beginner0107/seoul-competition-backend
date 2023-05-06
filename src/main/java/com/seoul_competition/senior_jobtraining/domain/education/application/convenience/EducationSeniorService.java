@@ -29,7 +29,7 @@ public class EducationSeniorService {
 
       Education education = Education.builder()
           .name((String) jsonObject.get("SUBJECT"))
-          .state(applyState)
+          .status(applyState)
           .url((String) jsonObject.get("VIEWDETAIL"))
           .price(decimalFormat.format(Integer.parseInt((String) jsonObject.get("REGISTCOST"))))
           .capacity(Integer.parseInt((String) jsonObject.get("REGISTPEOPLE")))

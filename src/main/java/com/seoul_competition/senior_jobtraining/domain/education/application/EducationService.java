@@ -40,7 +40,7 @@ public class EducationService {
   }
 
   public EducationListPageResponse findAllByName(Pageable pageable, String name) {
-    Page<Education> educationPage = educationRepository.findByNameContainingOrderByStateDesc(
+    Page<Education> educationPage = educationRepository.findByNameContainingOrderByStatusDesc(
         pageable, name);
 
     checkPageNumber(pageable, educationPage);

@@ -2,14 +2,13 @@ package com.seoul_competition.senior_jobtraining.domain.education.dto.response;
 
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.domain.review.dto.response.ReviewResDto;
-import com.seoul_competition.senior_jobtraining.domain.review.entity.Review;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public record EducationDetailResDto(
     Long id,
     String name,
-    String state,
+    String status,
 
     String price,
     int capacity,
@@ -22,7 +21,7 @@ public record EducationDetailResDto(
     List<ReviewResDto> reviews) {
 
   public EducationDetailResDto(Education education) {
-    this(education.getId(), education.getName(), education.getState(), education.getPrice(),
+    this(education.getId(), education.getName(), education.getStatus(), education.getPrice(),
         education.getCapacity(), education.getRegisterStart(), education.getRegisterEnd(),
         education.getEducationStart(), education.getEducationEnd(), education.getUrl(),
         education.getHits(),
