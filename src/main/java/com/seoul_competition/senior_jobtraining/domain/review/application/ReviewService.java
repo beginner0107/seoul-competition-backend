@@ -1,6 +1,5 @@
 package com.seoul_competition.senior_jobtraining.domain.review.application;
 
-import com.seoul_competition.senior_jobtraining.domain.comment.entity.Comment;
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.domain.review.dao.ReviewRepository;
@@ -35,8 +34,6 @@ public class ReviewService {
 
   @Transactional
   public void update(Long reviewId, ReviewUpdateReqDto reqDto) {
-    educationRepository.findById(reqDto.EducationId())
-        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EDUCATION_NOT_EXISTS));
 
     Review review = reviewRepository.findById(reviewId)
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS));
