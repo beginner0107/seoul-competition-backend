@@ -19,6 +19,7 @@ public class EducationResponse {
   private String educationEnd;
   private String url;
   private Long hits;
+  private int reviewsCount;
 
   public EducationResponse(Education education) {
     this.id = education.getId();
@@ -32,6 +33,7 @@ public class EducationResponse {
     this.educationStart = education.getEducationStart();
     this.educationEnd = education.getEducationEnd();
     this.hits = education.getHits();
+    this.reviewsCount = education.getReviews().size();
   }
 
 }
