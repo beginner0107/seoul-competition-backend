@@ -5,17 +5,26 @@ import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSave
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
+import com.seoul_competition.senior_jobtraining.domain.user.application.UserDetailService;
+import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
+import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
+import com.seoul_competition.senior_jobtraining.domain.user.dto.UserSearchSaveDto;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,10 +38,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "게시글", description = "게시글에 대한 API입니다.")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
+  @Value("${myapp.api-key}")
+  private String SECRET_KEY;
+
   private final PostService postService;
+  private final UserSearchService userSearchService;
+  private final UserDetailService userDetailService;
 
   @Operation(summary = "게시글 저장", description = "게시글을 저장합니다.")
   @PostMapping
@@ -48,14 +63,27 @@ public class PostController {
   public ResponseEntity<PostListResponse> getPosts(
       @RequestParam(name = "name", required = false) String searchValue,
       @PageableDefault(size = 20, sort = "createdAt", direction = Direction.DESC)
-      Pageable pageable) {
-    return ResponseEntity.ok(postService.getPosts(pageable, searchValue));
+      Pageable pageable, @CookieValue(value = "jwt", required = false) String jwt) {
+
+    PostListResponse posts = postService.getPosts(pageable, searchValue, hasCookie(jwt));
+    if (posts.isUser() && searchValue != null && searchValue.length() != 0) {
+      Claims claims = getClaims(jwt);
+      log.info("searchValue : {}", searchValue);
+      userSearchService.saveUserSearch(UserSearchSaveDto.from(claims, searchValue));
+    }
+    return ResponseEntity.ok(posts);
   }
 
   @Operation(summary = "게시글 상세 조회", description = "특정 게시글의 상세 정보를 조회합니다.")
   @GetMapping("/{postId}")
-  public ResponseEntity<PostDetailResDto> getPost(@PathVariable Long postId) {
-    PostDetailResDto postDetailResDto = postService.getPost(postId);
+  public ResponseEntity<PostDetailResDto> getPost(@PathVariable Long postId,
+      @CookieValue(value = "jwt", required = false) String jwt) {
+
+    PostDetailResDto postDetailResDto = postService.getPost(postId, hasCookie(jwt));
+    if (postDetailResDto.user()) {
+      Claims claims = getClaims(jwt);
+      userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, postId));
+    }
     return ResponseEntity.status(HttpStatus.OK)
         .body(postDetailResDto);
   }
@@ -84,5 +112,18 @@ public class PostController {
       @RequestBody Map<String, String> password) {
     postService.matchCheck(postId, password.get("password"));
     return ResponseEntity.noContent().build();
+  }
+
+  private Claims getClaims(String jwt) {
+    Claims claims;
+    claims = Jwts.parser()
+        .setSigningKey(SECRET_KEY.getBytes())
+        .parseClaimsJws(jwt)
+        .getBody();
+    return claims;
+  }
+
+  private boolean hasCookie(String jwt) {
+    return jwt != null;
   }
 }

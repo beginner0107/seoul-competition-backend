@@ -15,4 +15,6 @@ public class PostListResponse {
   private List<PostResDto> data;
   private int totalPages;
   private int currentPage;
+  private boolean user;
+
 }

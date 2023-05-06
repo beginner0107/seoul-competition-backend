@@ -33,7 +33,7 @@ public class PostService {
   }
 
   @Transactional
-  public PostDetailResDto getPost(Long postId) {
+  public PostDetailResDto getPost(Long postId, boolean hasCookie) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new EntityNotFoundException(
             ErrorCode.POST_NOT_EXISTS));
@@ -41,7 +41,7 @@ public class PostService {
     post.addHits();
 
     return PostDetailResDto.of(post.getId(), post.getNickname(), post.getTitle(), post.getContent(),
-        post.getCreatedAt(), post.getHits(), post.getComments());
+        post.getCreatedAt(), post.getHits(), post.getComments(), hasCookie);
   }
 
   @Transactional
@@ -64,7 +64,7 @@ public class PostService {
     postRepository.delete(post);
   }
 
-  public PostListResponse getPosts(Pageable pageable, String searchTerm) {
+  public PostListResponse getPosts(Pageable pageable, String searchTerm, boolean hasCookie) {
     Page<Post> postPage;
     if (searchTerm != null && !searchTerm.isEmpty()) {
       postPage = postRepository.findByTitleOrContent(searchTerm, pageable);
@@ -76,7 +76,8 @@ public class PostService {
 
     List<PostResDto> posts = postPage.getContent().stream().map(PostResDto::of)
         .collect(Collectors.toList());
-    return new PostListResponse(posts, postPage.getTotalPages() - 1, postPage.getNumber());
+    return new PostListResponse(posts, postPage.getTotalPages() - 1, postPage.getNumber(),
+        hasCookie);
   }
 
   private void checkPageNumber(Pageable pageable, Page<Post> postPage) {
