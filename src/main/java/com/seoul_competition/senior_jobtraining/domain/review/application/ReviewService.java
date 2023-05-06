@@ -7,9 +7,11 @@ import com.seoul_competition.senior_jobtraining.domain.review.dto.request.Review
 import com.seoul_competition.senior_jobtraining.domain.review.dto.request.ReviewUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.review.entity.Review;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
+import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +34,6 @@ public class ReviewService {
 
   @Transactional
   public void update(Long reviewId, ReviewUpdateReqDto reqDto) {
-    educationRepository.findById(reqDto.EducationId())
-        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EDUCATION_NOT_EXISTS));
 
     Review review = reviewRepository.findById(reviewId)
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS));
@@ -50,5 +50,15 @@ public class ReviewService {
     review.checkPassword(password);
     reviewRepository.delete(review);
 
+  }
+
+  public void matchCheck(Long reviewId, String password) {
+    if (StringUtils.isBlank(password)) {
+      throw new BusinessException(ErrorCode.PASSWORD_EMPTY);
+    }
+    Review review = reviewRepository.findById(reviewId).orElseThrow(
+        () -> new EntityNotFoundException(
+            ErrorCode.COMMENT_NOT_EXISTS));
+    review.checkPassword(password);
   }
 }

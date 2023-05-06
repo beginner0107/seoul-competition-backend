@@ -42,4 +42,11 @@ public class ReviewController {
     reviewService.delete(reviewId, password.get("password"));
     return ResponseEntity.noContent().build();
   }
+
+  @PostMapping("/{reviewId}/matchCheck")
+  public ResponseEntity<Void> matchCheck(@PathVariable Long reviewId,
+      @RequestBody Map<String, String> password) {
+    reviewService.matchCheck(reviewId, password.get("password"));
+    return ResponseEntity.noContent().build();
+  }
 }
