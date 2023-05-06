@@ -9,7 +9,7 @@ public class EducationResponse {
 
   private Long id;
   private String name;
-  private String state;
+  private String status;
 
   private String price;
   private int capacity;
@@ -24,7 +24,7 @@ public class EducationResponse {
   public EducationResponse(Education education) {
     this.id = education.getId();
     this.name = education.getName();
-    this.state = education.getState();
+    this.status = education.getStatus();
     this.url = education.getUrl();
     this.price = education.getPrice();
     this.capacity = education.getCapacity();

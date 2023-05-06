@@ -44,7 +44,7 @@ public class EducationFiftyService {
       JSONObject jsonObject = (JSONObject) infoArr.get(i);
       Education education = Education.builder()
           .name((String) jsonObject.get("LCT_NM"))
-          .state((String) jsonObject.get("LCT_STAT"))
+          .status((String) jsonObject.get("LCT_STAT"))
           .url((String) jsonObject.get("CR_URL"))
           .price(decimalFormat.format(Integer.parseInt(
               (String) jsonObject.get("LCT_COST") != "" ? (String) jsonObject.get("LCT_COST")

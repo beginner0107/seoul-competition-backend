@@ -39,8 +39,8 @@ public class Education {
   private int capacity;
   @Column(name = "name", nullable = false)
   private String name;
-  @Column(name = "state", nullable = false)
-  private String state;
+  @Column(name = "status", nullable = false)
+  private String status;
   @Column(name = "url", nullable = false)
   private String url;
   @Column(name = "register_start", nullable = false)
@@ -66,12 +66,12 @@ public class Education {
   private int originId;
 
   @Builder
-  public Education(String name, String state, String url, String price, int capacity,
+  public Education(String name, String status, String url, String price, int capacity,
       String registerStart, String registerEnd, String educationStart,
       String educationEnd, Long hits, int originId) {
 
     this.name = name;
-    this.state = state;
+    this.status = status;
     this.url = url;
     this.price = price;
     this.capacity = capacity;
