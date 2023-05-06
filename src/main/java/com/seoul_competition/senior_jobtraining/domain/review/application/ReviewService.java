@@ -43,10 +43,10 @@ public class ReviewService {
     review.update(reqDto.content());
   }
 
+  @Transactional
   public void delete(Long reviewId, String password) {
     Review review = reviewRepository.findById(reviewId)
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.REVIEW_NOT_EXISTS));
-    System.out.println(password);
     review.checkPassword(password);
     reviewRepository.delete(review);
 
