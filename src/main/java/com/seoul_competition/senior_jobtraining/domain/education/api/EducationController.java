@@ -1,6 +1,7 @@
 package com.seoul_competition.senior_jobtraining.domain.education.api;
 
 import com.seoul_competition.senior_jobtraining.domain.education.application.EducationService;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,8 @@ public class EducationController {
   }
 
   @GetMapping("/{educationId}")
-  public ResponseEntity<EducationResponse> getEducation(@PathVariable long educationId) {
-    EducationResponse response = educationService.findById(educationId);
+  public ResponseEntity<EducationDetailResDto> getEducation(@PathVariable long educationId) {
+    EducationDetailResDto response = educationService.findById(educationId);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

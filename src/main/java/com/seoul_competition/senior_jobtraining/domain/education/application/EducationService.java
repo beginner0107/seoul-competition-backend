@@ -3,6 +3,7 @@ package com.seoul_competition.senior_jobtraining.domain.education.application;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationFiftyService;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationSeniorService;
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
@@ -60,10 +61,10 @@ public class EducationService {
   }
 
   @Transactional
-  public EducationResponse findById(Long id) {
+  public EducationDetailResDto findById(Long id) {
     Education findEducation = educationRepository.findById(id).get();
     findEducation.hitsPlus();
-    return new EducationResponse(findEducation);
+    return new EducationDetailResDto(findEducation);
   }
 
 
