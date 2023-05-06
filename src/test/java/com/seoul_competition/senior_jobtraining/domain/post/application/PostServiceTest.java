@@ -43,7 +43,7 @@ class PostServiceTest {
 
     // When
     PostListResponse posts;
-    posts = postService.getPosts(pageable, searchValue);
+    posts = postService.getPosts(pageable, searchValue, false);
 
     // Then
     assertThat(posts.getData()).isEmpty();
@@ -57,9 +57,10 @@ class PostServiceTest {
     Long postId = 0L;
     Post post = createPost();
     given(postRepository.findById(postId)).willReturn(Optional.of(post));
+    boolean isCookie = false;
 
     // When
-    PostDetailResDto dto = postService.getPost(postId);
+    PostDetailResDto dto = postService.getPost(postId, false);
 
     // Then
     assertThat(dto)

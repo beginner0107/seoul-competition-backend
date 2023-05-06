@@ -13,14 +13,16 @@ public record PostDetailResDto(
     String content,
     LocalDateTime createdAt,
     Long hits,
-    List<CommentResDto> comments
+    List<CommentResDto> comments,
+    boolean user
 ) {
 
   public static PostDetailResDto of(Long id, String nickname, String title, String content,
-      LocalDateTime createdAt, Long hits, List<Comment> comments) {
+      LocalDateTime createdAt, Long hits, List<Comment> comments, boolean user) {
     List<CommentResDto> commentResDtos = comments.stream()
         .map(CommentResDto::from)
         .collect(Collectors.toList());
-    return new PostDetailResDto(id, nickname, title, content, createdAt, hits, commentResDtos);
+    return new PostDetailResDto(id, nickname, title, content, createdAt, hits, commentResDtos,
+        user);
   }
 }
