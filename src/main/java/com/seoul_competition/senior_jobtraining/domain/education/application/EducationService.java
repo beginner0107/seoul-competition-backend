@@ -1,8 +1,13 @@
 package com.seoul_competition.senior_jobtraining.domain.education.application;
 
+import static com.seoul_competition.senior_jobtraining.domain.education.entity.QEducation.education;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationFiftyService;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationSeniorService;
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.request.EducationSearchReqDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
@@ -30,23 +35,40 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
-  public EducationListPageResponse findAllByPage(Pageable pageable) {
-    Page<Education> educationPage = educationRepository.findAll(pageable);
+  public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto) {
+
+    BooleanBuilder builder = new BooleanBuilder();
+
+    if (reqDto.name() != null) {
+      builder.and(education.name.contains(reqDto.name()));
+    }
+    if (reqDto.status() != null) {
+      builder.and(education.status.eq(reqDto.status()));
+    }
+    if (reqDto.minPrice() != null) {
+      builder.and(Expressions
+          .numberPath(Integer.class, "education.price")
+          .gt(reqDto.minPrice()));
+    }
+    if (reqDto.maxPrice() != null) {
+      builder.and(Expressions
+          .numberPath(Integer.class, "education.price")
+          .lt(reqDto.maxPrice()));
+    }
+    if (reqDto.startDate() != null) {
+      builder.and(education.educationStart.gt(reqDto.startDate()));
+    }
+    if (reqDto.endDate() != null) {
+      builder.and(education.educationEnd.lt(reqDto.endDate()));
+    }
+
+    Page<Education> educationPage = educationRepository.findAll(builder, pageable);
 
     checkPageNumber(pageable, educationPage);
 
     return new EducationListPageResponse(entityToResponse(educationPage),
-        educationPage.getTotalPages() - 1, pageable.getPageNumber(), educationPage.getTotalElements());
-  }
-
-  public EducationListPageResponse findAllByName(Pageable pageable, String name) {
-    Page<Education> educationPage = educationRepository.findByNameContainingOrderByStatusDesc(
-        pageable, name);
-
-    checkPageNumber(pageable, educationPage);
-
-    return new EducationListPageResponse(entityToResponse(educationPage),
-        educationPage.getTotalPages() - 1, pageable.getPageNumber(), educationPage.getTotalElements());
+        educationPage.getTotalPages() - 1, pageable.getPageNumber(),
+        educationPage.getTotalElements());
   }
 
   private void checkPageNumber(Pageable pageable, Page<Education> educationPage) {
