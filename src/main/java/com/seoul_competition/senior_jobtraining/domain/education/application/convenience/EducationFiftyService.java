@@ -5,6 +5,8 @@ import com.seoul_competition.senior_jobtraining.domain.education.entity.Educatio
 import com.seoul_competition.senior_jobtraining.global.error.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.FiftyApi;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -23,8 +25,6 @@ public class EducationFiftyService {
   private static int startPage = 0;
   private static int endPage = 999;
   private static int increaseUnit = 1000;
-  private static DecimalFormat decimalFormat = new DecimalFormat("###,###");
-
 
   @Transactional
   public void saveFifty() {
@@ -40,22 +40,22 @@ public class EducationFiftyService {
   }
 
   private void saveInfoArr(JSONArray infoArr) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
     for (int i = 0; i < infoArr.size(); i++) {
       JSONObject jsonObject = (JSONObject) infoArr.get(i);
       Education education = Education.builder()
           .name((String) jsonObject.get("LCT_NM"))
           .status((String) jsonObject.get("LCT_STAT"))
           .url((String) jsonObject.get("CR_URL"))
-          .price(decimalFormat.format(Integer.parseInt(
-              (String) jsonObject.get("LCT_COST") != "" ? (String) jsonObject.get("LCT_COST")
-                  : "0")))
+          .price(Integer.parseInt((String) jsonObject.get("LCT_COST")))
           .capacity(Integer.parseInt(
               (String) jsonObject.get("CR_PPL_STAT") != "" ? (String) jsonObject.get(
                   "CR_PPL_STAT") : "0"))
-          .registerStart((String) jsonObject.get("REG_STDE"))
-          .registerEnd((String) jsonObject.get("REG_EDDE"))
-          .educationStart((String) jsonObject.get("CR_STDE"))
-          .educationEnd((String) jsonObject.get("CR_EDDE"))
+          .registerStart(LocalDate.parse((String) jsonObject.get("REG_STDE"), formatter))
+          .registerEnd(LocalDate.parse((String) jsonObject.get("REG_EDDE"), formatter))
+          .educationStart(LocalDate.parse((String) jsonObject.get("CR_STDE"), formatter))
+          .educationEnd(LocalDate.parse((String) jsonObject.get("CR_EDDE"), formatter))
           .hits(0L)
           .originId(Integer.parseInt((String) jsonObject.get("LCT_NO")))
           .build();

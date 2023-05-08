@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.lang.String;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,9 @@ public class Education {
   private Long id;
 
   @Column(name = "price", nullable = false)
-  private String price;
+  private Integer price;
   @Column(name = "capacity", nullable = false)
-  private int capacity;
+  private Integer capacity;
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "status", nullable = false)
@@ -44,13 +45,13 @@ public class Education {
   @Column(name = "url", nullable = false)
   private String url;
   @Column(name = "register_start", nullable = false)
-  private String registerStart;
+  private LocalDate registerStart;
   @Column(name = "register_end", nullable = false)
-  private String registerEnd;
+  private LocalDate registerEnd;
   @Column(name = "education_start", nullable = false)
-  private String educationStart;
+  private LocalDate educationStart;
   @Column(name = "education_end", nullable = false)
-  private String educationEnd;
+  private LocalDate educationEnd;
 
   @Column(name = "hits", nullable = false)
   private Long hits;
@@ -66,9 +67,9 @@ public class Education {
   private int originId;
 
   @Builder
-  public Education(String name, String status, String url, String price, int capacity,
-      String registerStart, String registerEnd, String educationStart,
-      String educationEnd, Long hits, int originId) {
+  public Education(String name, String status, String url, Integer price, Integer capacity,
+      LocalDate registerStart, LocalDate registerEnd, LocalDate educationStart,
+      LocalDate educationEnd, Long hits, int originId) {
 
     this.name = name;
     this.status = status;

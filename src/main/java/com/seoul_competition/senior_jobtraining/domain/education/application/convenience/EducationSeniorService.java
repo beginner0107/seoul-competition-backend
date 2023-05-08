@@ -3,6 +3,8 @@ package com.seoul_competition.senior_jobtraining.domain.education.application.co
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,10 +20,12 @@ public class EducationSeniorService {
 
   private final static String BEFORE_WAITING_CONTENT = "접수중";
   private final static String AFTER_WAITING_CONTENT = "수강신청중";
-  private static DecimalFormat decimalFormat = new DecimalFormat("###,###");
+
 
   @Transactional
   public void saveSenior(JSONArray infoArr) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
     for (int i = 0; i < infoArr.size(); i++) {
       JSONObject jsonObject = (JSONObject) infoArr.get(i);
 
@@ -31,12 +35,21 @@ public class EducationSeniorService {
           .name((String) jsonObject.get("SUBJECT"))
           .status(applyState)
           .url((String) jsonObject.get("VIEWDETAIL"))
-          .price(decimalFormat.format(Integer.parseInt((String) jsonObject.get("REGISTCOST"))))
+          .price((Integer.parseInt((String) jsonObject.get("REGISTCOST"))))
           .capacity(Integer.parseInt((String) jsonObject.get("REGISTPEOPLE")))
-          .registerStart(((String) jsonObject.get("APPLICATIONSTARTDATE")).replaceAll("-", "."))
-          .registerEnd(((String) jsonObject.get("APPLICATIONENDDATE")).replaceAll("-", "."))
-          .educationStart(((String) jsonObject.get("STARTDATE")).replaceAll("-", "."))
-          .educationEnd(((String) jsonObject.get("ENDDATE")).replaceAll("-", "."))
+          .registerStart(
+              LocalDate.parse(
+                  ((String) jsonObject.get("APPLICATIONSTARTDATE")).replaceAll("-", "."),
+                  formatter))
+          .registerEnd(
+              LocalDate.parse(
+                  ((String) jsonObject.get("APPLICATIONENDDATE")).replaceAll("-", "."), formatter))
+          .educationStart(
+              LocalDate.parse(((String) jsonObject.get("STARTDATE")).replaceAll("-", "."),
+                  formatter))
+          .educationEnd(
+              LocalDate.parse(((String) jsonObject.get("ENDDATE")).replaceAll("-", "."),
+                  formatter))
           .hits(0L)
           .originId(Integer.parseInt((String) jsonObject.get("IDX")))
           .build();

@@ -1,7 +1,10 @@
 package com.seoul_competition.senior_jobtraining.domain.education.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.domain.review.dto.response.ReviewResDto;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,17 +14,22 @@ public record EducationDetailResDto(
     String status,
 
     String price,
-    int capacity,
-    String registerStart,
-    String registerEnd,
-    String educationStart,
-    String educationEnd,
+    Integer capacity,
+    @JsonFormat(pattern = "yyyy.MM.dd")
+    LocalDate registerStart,
+    @JsonFormat(pattern = "yyyy.MM.dd")
+    LocalDate registerEnd,
+    @JsonFormat(pattern = "yyyy.MM.dd")
+    LocalDate educationStart,
+    @JsonFormat(pattern = "yyyy.MM.dd")
+    LocalDate educationEnd,
     String url,
     Long hits,
     List<ReviewResDto> reviews) {
 
   public EducationDetailResDto(Education education) {
-    this(education.getId(), education.getName(), education.getStatus(), education.getPrice(),
+    this(education.getId(), education.getName(), education.getStatus(),
+        new DecimalFormat("###,###").format(education.getPrice()),
         education.getCapacity(), education.getRegisterStart(), education.getRegisterEnd(),
         education.getEducationStart(), education.getEducationEnd(), education.getUrl(),
         education.getHits(),
