@@ -22,7 +22,7 @@ public class UserController {
 
   @Value("${myapp.api-key}")
   private String SECRET_KEY;
-  private static final long EXPIRATION_TIME = 31536000L; // 1년
+  private static final long EXPIRATION_TIME = 31536000000L; // 1년
   private static final int COOKIE_MAX_AGE = 31536000; // 1년
 
   @PostMapping

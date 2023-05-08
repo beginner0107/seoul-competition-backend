@@ -68,7 +68,6 @@ public class PostController {
     PostListResponse posts = postService.getPosts(pageable, searchValue, hasCookie(jwt));
     if (posts.isUser() && searchValue != null && searchValue.length() != 0) {
       Claims claims = getClaims(jwt);
-      log.info("searchValue : {}", searchValue);
       userSearchService.saveUserSearch(UserSearchSaveDto.from(claims, searchValue));
     }
     return ResponseEntity.ok(posts);
