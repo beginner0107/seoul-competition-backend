@@ -55,12 +55,12 @@ public class EducationService {
           .numberPath(Integer.class, "education.price")
           .lt(reqDto.maxPrice()));
     }
-    if (reqDto.startDate() != null) {
-      builder.and(education.educationStart.gt(reqDto.startDate()));
-    }
-    if (reqDto.endDate() != null) {
-      builder.and(education.educationEnd.lt(reqDto.endDate()));
-    }
+//    if (reqDto.startDate() != null) {
+//      builder.and(education.educationStart.gt(reqDto.startDate()));
+//    }
+//    if (reqDto.endDate() != null) {
+//      builder.and(education.educationEnd.lt(reqDto.endDate()));
+//    }
 
     Page<Education> educationPage = educationRepository.findAll(builder, pageable);
 

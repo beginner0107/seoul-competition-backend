@@ -1,7 +1,9 @@
 package com.seoul_competition.senior_jobtraining.domain.education.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import lombok.Getter;
 
 
@@ -14,10 +16,14 @@ public class EducationResponse {
 
   private String price;
   private Integer capacity;
-  private String registerStart;
-  private String registerEnd;
-  private String educationStart;
-  private String educationEnd;
+  @JsonFormat(pattern = "yyyy.MM.dd")
+  private LocalDate registerStart;
+  @JsonFormat(pattern = "yyyy.MM.dd")
+  private LocalDate registerEnd;
+  @JsonFormat(pattern = "yyyy.MM.dd")
+  private LocalDate educationStart;
+  @JsonFormat(pattern = "yyyy.MM.dd")
+  private LocalDate educationEnd;
   private String url;
   private Long hits;
   private int reviewsCount;

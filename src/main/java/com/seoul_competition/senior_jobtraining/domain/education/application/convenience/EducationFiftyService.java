@@ -5,6 +5,8 @@ import com.seoul_competition.senior_jobtraining.domain.education.entity.Educatio
 import com.seoul_competition.senior_jobtraining.global.error.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.external.openApi.education.FiftyApi;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -38,6 +40,8 @@ public class EducationFiftyService {
   }
 
   private void saveInfoArr(JSONArray infoArr) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
     for (int i = 0; i < infoArr.size(); i++) {
       JSONObject jsonObject = (JSONObject) infoArr.get(i);
       Education education = Education.builder()
@@ -48,10 +52,10 @@ public class EducationFiftyService {
           .capacity(Integer.parseInt(
               (String) jsonObject.get("CR_PPL_STAT") != "" ? (String) jsonObject.get(
                   "CR_PPL_STAT") : "0"))
-          .registerStart((String) jsonObject.get("REG_STDE"))
-          .registerEnd((String) jsonObject.get("REG_EDDE"))
-          .educationStart((String) jsonObject.get("CR_STDE"))
-          .educationEnd((String) jsonObject.get("CR_EDDE"))
+          .registerStart(LocalDate.parse((String) jsonObject.get("REG_STDE"), formatter))
+          .registerEnd(LocalDate.parse((String) jsonObject.get("REG_EDDE"), formatter))
+          .educationStart(LocalDate.parse((String) jsonObject.get("CR_STDE"), formatter))
+          .educationEnd(LocalDate.parse((String) jsonObject.get("CR_EDDE"), formatter))
           .hits(0L)
           .originId(Integer.parseInt((String) jsonObject.get("LCT_NO")))
           .build();
