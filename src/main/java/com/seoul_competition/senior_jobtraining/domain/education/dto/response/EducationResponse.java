@@ -13,7 +13,7 @@ public class EducationResponse {
   private String status;
 
   private String price;
-  private int capacity;
+  private Integer capacity;
   private String registerStart;
   private String registerEnd;
   private String educationStart;

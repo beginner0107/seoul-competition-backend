@@ -36,7 +36,7 @@ public class Education {
   @Column(name = "price", nullable = false)
   private Integer price;
   @Column(name = "capacity", nullable = false)
-  private int capacity;
+  private Integer capacity;
   @Column(name = "name", nullable = false)
   private String name;
   @Column(name = "status", nullable = false)
@@ -66,7 +66,7 @@ public class Education {
   private int originId;
 
   @Builder
-  public Education(String name, String status, String url, Integer price, int capacity,
+  public Education(String name, String status, String url, Integer price, Integer capacity,
       String registerStart, String registerEnd, String educationStart,
       String educationEnd, Long hits, int originId) {
 

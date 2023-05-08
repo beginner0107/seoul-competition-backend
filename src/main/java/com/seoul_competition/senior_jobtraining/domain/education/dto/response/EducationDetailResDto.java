@@ -12,7 +12,7 @@ public record EducationDetailResDto(
     String status,
 
     String price,
-    int capacity,
+    Integer capacity,
     String registerStart,
     String registerEnd,
     String educationStart,
