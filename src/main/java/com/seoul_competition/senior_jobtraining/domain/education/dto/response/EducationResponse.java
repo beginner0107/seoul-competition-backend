@@ -1,6 +1,7 @@
 package com.seoul_competition.senior_jobtraining.domain.education.dto.response;
 
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
+import java.text.DecimalFormat;
 import lombok.Getter;
 
 
@@ -26,7 +27,7 @@ public class EducationResponse {
     this.name = education.getName();
     this.status = education.getStatus();
     this.url = education.getUrl();
-    this.price = education.getPrice();
+    this.price = new DecimalFormat("###,###").format(education.getPrice());
     this.capacity = education.getCapacity();
     this.registerStart = education.getRegisterStart();
     this.registerEnd = education.getRegisterEnd();

@@ -18,7 +18,6 @@ public class EducationSeniorService {
 
   private final static String BEFORE_WAITING_CONTENT = "접수중";
   private final static String AFTER_WAITING_CONTENT = "수강신청중";
-  private static DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
   @Transactional
   public void saveSenior(JSONArray infoArr) {
@@ -31,7 +30,7 @@ public class EducationSeniorService {
           .name((String) jsonObject.get("SUBJECT"))
           .status(applyState)
           .url((String) jsonObject.get("VIEWDETAIL"))
-          .price(decimalFormat.format(Integer.parseInt((String) jsonObject.get("REGISTCOST"))))
+          .price((Integer.parseInt((String) jsonObject.get("REGISTCOST"))))
           .capacity(Integer.parseInt((String) jsonObject.get("REGISTPEOPLE")))
           .registerStart(((String) jsonObject.get("APPLICATIONSTARTDATE")).replaceAll("-", "."))
           .registerEnd(((String) jsonObject.get("APPLICATIONENDDATE")).replaceAll("-", "."))

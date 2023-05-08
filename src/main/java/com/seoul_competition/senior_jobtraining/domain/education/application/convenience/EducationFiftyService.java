@@ -23,8 +23,6 @@ public class EducationFiftyService {
   private static int startPage = 0;
   private static int endPage = 999;
   private static int increaseUnit = 1000;
-  private static DecimalFormat decimalFormat = new DecimalFormat("###,###");
-
 
   @Transactional
   public void saveFifty() {
@@ -46,9 +44,7 @@ public class EducationFiftyService {
           .name((String) jsonObject.get("LCT_NM"))
           .status((String) jsonObject.get("LCT_STAT"))
           .url((String) jsonObject.get("CR_URL"))
-          .price(decimalFormat.format(Integer.parseInt(
-              (String) jsonObject.get("LCT_COST") != "" ? (String) jsonObject.get("LCT_COST")
-                  : "0")))
+          .price(Integer.parseInt((String) jsonObject.get("LCT_COST")))
           .capacity(Integer.parseInt(
               (String) jsonObject.get("CR_PPL_STAT") != "" ? (String) jsonObject.get(
                   "CR_PPL_STAT") : "0"))
