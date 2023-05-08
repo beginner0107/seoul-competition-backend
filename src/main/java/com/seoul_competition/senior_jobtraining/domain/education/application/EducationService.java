@@ -3,7 +3,6 @@ package com.seoul_competition.senior_jobtraining.domain.education.application;
 import static com.seoul_competition.senior_jobtraining.domain.education.entity.QEducation.education;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.Expressions;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationFiftyService;
 import com.seoul_competition.senior_jobtraining.domain.education.application.convenience.EducationSeniorService;
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
@@ -46,21 +45,17 @@ public class EducationService {
       builder.and(education.status.eq(reqDto.status()));
     }
     if (reqDto.minPrice() != null) {
-      builder.and(Expressions
-          .numberPath(Integer.class, "education.price")
-          .gt(reqDto.minPrice()));
+      builder.and(education.price.goe(reqDto.minPrice()));
     }
     if (reqDto.maxPrice() != null) {
-      builder.and(Expressions
-          .numberPath(Integer.class, "education.price")
-          .lt(reqDto.maxPrice()));
+      builder.and(education.price.loe(reqDto.maxPrice()));
     }
-//    if (reqDto.startDate() != null) {
-//      builder.and(education.educationStart.gt(reqDto.startDate()));
-//    }
-//    if (reqDto.endDate() != null) {
-//      builder.and(education.educationEnd.lt(reqDto.endDate()));
-//    }
+    if (reqDto.startDate() != null) {
+      builder.and(education.educationStart.goe(reqDto.startDate()));
+    }
+    if (reqDto.endDate() != null) {
+      builder.and(education.educationEnd.loe(reqDto.endDate()));
+    }
 
     Page<Education> educationPage = educationRepository.findAll(builder, pageable);
 
