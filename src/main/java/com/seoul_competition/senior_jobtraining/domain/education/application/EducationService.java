@@ -37,7 +37,8 @@ public class EducationService {
   private int seniorSize = 0;
   private int fiftySize = 0;
 
-  public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto) {
+  public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto,
+      boolean user) {
 
     BooleanBuilder builder = new BooleanBuilder();
 
@@ -66,7 +67,7 @@ public class EducationService {
 
     return new EducationListPageResponse(entityToResponse(educationPage),
         educationPage.getTotalPages() - 1, pageable.getPageNumber(),
-        educationPage.getTotalElements());
+        educationPage.getTotalElements(), user);
   }
 
   private void checkPageNumber(Pageable pageable, Page<Education> educationPage) {
