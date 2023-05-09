@@ -96,6 +96,13 @@ public class EducationService {
     fiftySize = educationFiftyService.getFiftyApi().getTotalCount().intValue();
   }
 
+  /***
+   * 최근에 저장된 총 데이터 갯수인 totalCount를 저장하고 그것보다 크면 update 실행
+   * senior - 마지막 페이지에 추가로 데이터가 들어오기 때문에, 현재 최대 크기 + 1을 해주어, 업데이트 데이터로 접근
+   * fifty - 랜덤으로 추가하기 때문에 (앞쪽으로 들어오긴 함) 총 데이터 크기 차이로 차수를 구하여, 그 차수만큼 업데이트 함
+   *           - 데이터 유무 분별은 OriginId로 하였음
+   *           - 성능이슈가 조금 일어날 수 있으므로, 차수가 없어지면 바로 종료시켰음
+   */
   @Transactional
   public void update() {
     int updateSeniorTotalCount = educationSeniorService.getSeniorApi().getUpdateTotalCount();

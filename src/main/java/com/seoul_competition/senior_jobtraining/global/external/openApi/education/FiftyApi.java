@@ -50,7 +50,7 @@ public class FiftyApi {
 
   public int getUpdateTotalCount() {
     try {
-      URL url = new URL(String.format(OPENAPI_URL, key, 1, 1));
+      URL url = new URL(String.format(OPENAPI_URL, key, 1, 1)); // totalCount만 얻으면 되기 때문에, 최소한으로 추출
       BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
       JSONParser jsonParser = new JSONParser();
       JSONObject jsonObject = (JSONObject) jsonParser.parse(bf.readLine());
