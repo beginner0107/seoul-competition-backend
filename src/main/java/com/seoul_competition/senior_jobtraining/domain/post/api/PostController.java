@@ -74,7 +74,8 @@ public class PostController {
         JwtUtil.verifyJwt(jwt, SECRET_KEY));
     if (posts.isUser() && searchValue != null && searchValue.length() != 0) {
       Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
-      userSearchService.saveUserSearch(UserSearchSaveDto.from(claims, searchValue, BoardCategory.FREE));
+      userSearchService.saveUserSearch(
+          UserSearchSaveDto.from(claims, searchValue, BoardCategory.FREE));
     } else if (!posts.isUser()) {
       Cookie cookie = CookieUtil.createExpiredCookie("jwt");
       response.addCookie(cookie);
@@ -90,7 +91,7 @@ public class PostController {
         JwtUtil.verifyJwt(jwt, SECRET_KEY));
     if (postDetailResDto.user()) {
       Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
-      userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, postId));
+      userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, postId, BoardCategory.FREE));
     } else {
       Cookie cookie = CookieUtil.createExpiredCookie("jwt");
       response.addCookie(cookie);
