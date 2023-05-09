@@ -9,10 +9,13 @@ import com.seoul_competition.senior_jobtraining.domain.user.application.UserDeta
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserSearchSaveDto;
+import com.seoul_competition.senior_jobtraining.global.util.cookie.CookieUtil;
+import com.seoul_competition.senior_jobtraining.global.util.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Map;
@@ -63,12 +66,17 @@ public class PostController {
   public ResponseEntity<PostListResponse> getPosts(
       @RequestParam(name = "name", required = false) String searchValue,
       @PageableDefault(size = 20, sort = "createdAt", direction = Direction.DESC)
-      Pageable pageable, @CookieValue(value = "jwt", required = false) String jwt) {
+      Pageable pageable, @CookieValue(value = "jwt", required = false) String jwt,
+      HttpServletResponse response) {
 
-    PostListResponse posts = postService.getPosts(pageable, searchValue, hasCookie(jwt));
+    PostListResponse posts = postService.getPosts(pageable, searchValue,
+        JwtUtil.verifyJwt(jwt, SECRET_KEY));
     if (posts.isUser() && searchValue != null && searchValue.length() != 0) {
-      Claims claims = getClaims(jwt);
+      Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
       userSearchService.saveUserSearch(UserSearchSaveDto.from(claims, searchValue));
+    } else if (!posts.isUser()) {
+      Cookie cookie = CookieUtil.createExpiredCookie("jwt");
+      response.addCookie(cookie);
     }
     return ResponseEntity.ok(posts);
   }
@@ -76,12 +84,15 @@ public class PostController {
   @Operation(summary = "게시글 상세 조회", description = "특정 게시글의 상세 정보를 조회합니다.")
   @GetMapping("/{postId}")
   public ResponseEntity<PostDetailResDto> getPost(@PathVariable Long postId,
-      @CookieValue(value = "jwt", required = false) String jwt) {
-
-    PostDetailResDto postDetailResDto = postService.getPost(postId, hasCookie(jwt));
+      @CookieValue(value = "jwt", required = false) String jwt, HttpServletResponse response) {
+    PostDetailResDto postDetailResDto = postService.getPost(postId,
+        JwtUtil.verifyJwt(jwt, SECRET_KEY));
     if (postDetailResDto.user()) {
-      Claims claims = getClaims(jwt);
+      Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
       userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, postId));
+    } else {
+      Cookie cookie = CookieUtil.createExpiredCookie("jwt");
+      response.addCookie(cookie);
     }
     return ResponseEntity.status(HttpStatus.OK)
         .body(postDetailResDto);
@@ -111,18 +122,5 @@ public class PostController {
       @RequestBody Map<String, String> password) {
     postService.matchCheck(postId, password.get("password"));
     return ResponseEntity.noContent().build();
-  }
-
-  private Claims getClaims(String jwt) {
-    Claims claims;
-    claims = Jwts.parser()
-        .setSigningKey(SECRET_KEY.getBytes())
-        .parseClaimsJws(jwt)
-        .getBody();
-    return claims;
-  }
-
-  private boolean hasCookie(String jwt) {
-    return jwt != null;
   }
 }

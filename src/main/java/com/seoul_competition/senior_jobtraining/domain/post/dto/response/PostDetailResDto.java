@@ -25,4 +25,8 @@ public record PostDetailResDto(
     return new PostDetailResDto(id, nickname, title, content, createdAt, hits, commentResDtos,
         user);
   }
+
+  public PostDetailResDto withUser(boolean user) {
+    return new PostDetailResDto(id, nickname, title, content, createdAt, hits, comments, user);
+  }
 }
