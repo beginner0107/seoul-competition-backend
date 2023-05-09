@@ -77,6 +77,7 @@ public class PostService {
     List<PostResDto> posts = postPage.getContent().stream().map(PostResDto::of)
         .collect(Collectors.toList());
     return new PostListResponse(posts, postPage.getTotalPages() - 1, postPage.getNumber(),
+        postPage.getTotalElements(),
         hasCookie);
   }
 
