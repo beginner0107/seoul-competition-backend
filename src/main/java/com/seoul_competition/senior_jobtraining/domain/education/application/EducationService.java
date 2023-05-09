@@ -34,6 +34,9 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
+  private int seniorSize=0;
+  private int fiftySize=0;
+
   public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto) {
 
     BooleanBuilder builder = new BooleanBuilder();
@@ -88,7 +91,8 @@ public class EducationService {
   @Transactional
   public void saveAll() {
     educationFiftyService.saveFifty();
-    educationSeniorService.saveSenior(seniorApi.getInfoArr());
+    educationSeniorService.saveSenior(0);
+    seniorSize = educationSeniorService.getTotalCount();
   }
 
 }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class SeniorApi {
 
   private static final String OPENAPI_URL =
-      "http://openapi.seoul.go.kr:8088/%s/json/tbViewProgram/0/999";
+      "http://openapi.seoul.go.kr:8088/%s/json/tbViewProgram/%s/999";
 
   @Value("${key.senior}")
   private String key;
@@ -26,10 +26,9 @@ public class SeniorApi {
   private JSONObject subResult;
   private JSONArray infoArr;
 
-  @PostConstruct
-  public void getJson() {
+  public void getJson(int pageNumber) {
     try {
-      URL url = new URL(String.format(OPENAPI_URL, key));
+      URL url = new URL(String.format(OPENAPI_URL, key, pageNumber));
       BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
       jsonPasring(bf.readLine());
     } catch (Exception e) {

@@ -2,28 +2,36 @@ package com.seoul_competition.senior_jobtraining.domain.education.application.co
 
 import com.seoul_competition.senior_jobtraining.domain.education.dao.EducationRepository;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
+import com.seoul_competition.senior_jobtraining.global.external.openApi.education.SeniorApi;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Getter
 @Transactional(readOnly = true)
 public class EducationSeniorService {
 
   private final EducationRepository educationRepository;
+
+  private final SeniorApi seniorApi;
 
   private final static String BEFORE_WAITING_CONTENT = "접수중";
   private final static String AFTER_WAITING_CONTENT = "수강신청중";
 
 
   @Transactional
-  public void saveSenior(JSONArray infoArr) {
+  public void saveSenior(int pageNumber) {
+    seniorApi.getJson(pageNumber);
+    JSONArray infoArr = seniorApi.getInfoArr();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     for (int i = 0; i < infoArr.size(); i++) {
@@ -63,6 +71,10 @@ public class EducationSeniorService {
       applyState = AFTER_WAITING_CONTENT;
     }
     return applyState;
+  }
+
+  public int getTotalCount() {
+    return Long.valueOf(seniorApi.getTotalCount()).intValue();
   }
 
 }
