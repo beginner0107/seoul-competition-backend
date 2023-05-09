@@ -82,10 +82,10 @@ public class EducationService {
   }
 
   @Transactional
-  public EducationDetailResDto findById(Long id) {
+  public EducationDetailResDto findById(Long id,Boolean user) {
     Education findEducation = educationRepository.findById(id).get();
     findEducation.hitsPlus();
-    return new EducationDetailResDto(findEducation);
+    return new EducationDetailResDto(findEducation,user);
   }
 
 

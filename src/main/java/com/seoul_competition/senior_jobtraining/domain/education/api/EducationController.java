@@ -6,7 +6,9 @@ import com.seoul_competition.senior_jobtraining.domain.education.application.Edu
 import com.seoul_competition.senior_jobtraining.domain.education.dto.request.EducationSearchReqDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
+import com.seoul_competition.senior_jobtraining.domain.user.application.UserDetailService;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
+import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserSearchSaveDto;
 import com.seoul_competition.senior_jobtraining.domain.user.entity.BoardCategory;
 import com.seoul_competition.senior_jobtraining.global.util.cookie.CookieUtil;
@@ -41,6 +43,7 @@ public class EducationController {
 
   private final EducationService educationService;
   private final UserSearchService userSearchService;
+  private final UserDetailService userDetailService;
 
   private boolean first = true;
 
@@ -61,7 +64,8 @@ public class EducationController {
 
     if (educations.user() && hasText(reqDto.name())) {
       Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
-      userSearchService.saveUserSearch(UserSearchSaveDto.from(claims, reqDto.name(), BoardCategory.EDUCATION));
+      userSearchService.saveUserSearch(
+          UserSearchSaveDto.from(claims, reqDto.name(), BoardCategory.EDUCATION));
     } else if (!educations.user()) {
       Cookie cookie = CookieUtil.createExpiredCookie("jwt");
       response.addCookie(cookie);
@@ -70,8 +74,17 @@ public class EducationController {
   }
 
   @GetMapping("/{educationId}")
-  public ResponseEntity<EducationDetailResDto> getEducation(@PathVariable long educationId) {
-    EducationDetailResDto response = educationService.findById(educationId);
-    return ResponseEntity.status(HttpStatus.OK).body(response);
+  public ResponseEntity<EducationDetailResDto> getEducation(@PathVariable long educationId,
+      @CookieValue(value = "jwt", required = false) String jwt, HttpServletResponse response) {
+    EducationDetailResDto education = educationService.findById(educationId,
+        JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    if (education.user()) {
+      Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
+      userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, educationId,BoardCategory.EDUCATION));
+    } else {
+      Cookie cookie = CookieUtil.createExpiredCookie("jwt");
+      response.addCookie(cookie);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(education);
   }
 }
