@@ -13,9 +13,9 @@ public record UserDetailSaveDto(
     Long postId
 ) {
 
-  public static UserDetailSaveDto from(Claims claims, Long postId) {
+  public static UserDetailSaveDto from(Claims claims, Long postId, BoardCategory boardCategory) {
     return new UserDetailSaveDto(
-        BoardCategory.FREE,
+        boardCategory,
         claims.get("gender").toString(),
         claims.get("age").toString(),
         claims.get("location").toString(),

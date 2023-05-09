@@ -24,9 +24,9 @@ public record UserSearchSaveDto(
         .build();
   }
 
-  public static UserSearchSaveDto from(Claims claims, String searchValue) {
+  public static UserSearchSaveDto from(Claims claims, String searchValue,BoardCategory boardCategory) {
     return new UserSearchSaveDto(
-        BoardCategory.FREE,
+        boardCategory,
         claims.get("gender").toString(),
         claims.get("age").toString(),
         claims.get("location").toString(),

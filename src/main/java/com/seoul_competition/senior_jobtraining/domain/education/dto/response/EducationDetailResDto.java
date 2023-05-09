@@ -25,14 +25,16 @@ public record EducationDetailResDto(
     LocalDate educationEnd,
     String url,
     Long hits,
-    List<ReviewResDto> reviews) {
+    List<ReviewResDto> reviews,
+    boolean user) {
 
-  public EducationDetailResDto(Education education) {
+  public EducationDetailResDto(Education education, Boolean user) {
     this(education.getId(), education.getName(), education.getStatus(),
         new DecimalFormat("###,###").format(education.getPrice()),
         education.getCapacity(), education.getRegisterStart(), education.getRegisterEnd(),
         education.getEducationStart(), education.getEducationEnd(), education.getUrl(),
         education.getHits(),
-        education.getReviews().stream().map(ReviewResDto::new).collect(Collectors.toList()));
+        education.getReviews().stream().map(ReviewResDto::new).collect(Collectors.toList()),
+        user = user);
   }
 }

@@ -9,6 +9,7 @@ import com.seoul_competition.senior_jobtraining.domain.user.application.UserDeta
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserSearchSaveDto;
+import com.seoul_competition.senior_jobtraining.domain.user.entity.BoardCategory;
 import com.seoul_competition.senior_jobtraining.global.util.cookie.CookieUtil;
 import com.seoul_competition.senior_jobtraining.global.util.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -73,7 +74,8 @@ public class PostController {
         JwtUtil.verifyJwt(jwt, SECRET_KEY));
     if (posts.isUser() && searchValue != null && searchValue.length() != 0) {
       Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
-      userSearchService.saveUserSearch(UserSearchSaveDto.from(claims, searchValue));
+      userSearchService.saveUserSearch(
+          UserSearchSaveDto.from(claims, searchValue, BoardCategory.FREE));
     } else if (!posts.isUser()) {
       Cookie cookie = CookieUtil.createExpiredCookie("jwt");
       response.addCookie(cookie);
@@ -89,7 +91,7 @@ public class PostController {
         JwtUtil.verifyJwt(jwt, SECRET_KEY));
     if (postDetailResDto.user()) {
       Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
-      userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, postId));
+      userDetailService.saveUserDetail(UserDetailSaveDto.from(claims, postId, BoardCategory.FREE));
     } else {
       Cookie cookie = CookieUtil.createExpiredCookie("jwt");
       response.addCookie(cookie);

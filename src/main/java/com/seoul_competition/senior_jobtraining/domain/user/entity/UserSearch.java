@@ -42,12 +42,9 @@ public class UserSearch {
 
   @Column(nullable = false)
   private String interest;
-
-  @Column(nullable = false)
   private String keyword;
 
   @CreatedDate
-  @Column(nullable = false)
   private LocalDateTime createdAt;
 
   @Builder
