@@ -1,6 +1,7 @@
 package com.seoul_competition.senior_jobtraining.domain.education.dao;
 
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +11,7 @@ public interface EducationRepository extends JpaRepository<Education, Long>,
     QuerydslPredicateExecutor<Education> {
 
   Page<Education> findByNameContainingOrderByStatusDesc(Pageable pageable, String name);
+
+  Optional<Education> findByOriginId(Long originId);
 
 }

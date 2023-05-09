@@ -34,6 +34,9 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
+  private int seniorSize = 0;
+  private int fiftySize = 0;
+
   public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto) {
 
     BooleanBuilder builder = new BooleanBuilder();
@@ -88,7 +91,30 @@ public class EducationService {
   @Transactional
   public void saveAll() {
     educationFiftyService.saveFifty();
-    educationSeniorService.saveSenior(seniorApi.getInfoArr());
+    educationSeniorService.saveSenior(0);
+    seniorSize = educationSeniorService.getSeniorApi().getTotalCount().intValue();
+    fiftySize = educationFiftyService.getFiftyApi().getTotalCount().intValue();
+  }
+
+  /***
+   * 최근에 저장된 총 데이터 갯수인 totalCount를 저장하고 그것보다 크면 update 실행
+   * senior - 마지막 페이지에 추가로 데이터가 들어오기 때문에, 현재 최대 크기 + 1을 해주어, 업데이트 데이터로 접근
+   * fifty - 랜덤으로 추가하기 때문에 (앞쪽으로 들어오긴 함) 총 데이터 크기 차이로 차수를 구하여, 그 차수만큼 업데이트 함
+   *           - 데이터 유무 분별은 OriginId로 하였음
+   *           - 성능이슈가 조금 일어날 수 있으므로, 차수가 없어지면 바로 종료시켰음
+   */
+  @Transactional
+  public void update() {
+    int updateSeniorTotalCount = educationSeniorService.getSeniorApi().getUpdateTotalCount();
+    if (seniorSize < updateSeniorTotalCount) {
+      educationSeniorService.saveSenior(seniorSize + 1);
+      seniorSize = updateSeniorTotalCount;
+    }
+    int updateFiftyTotalCount = educationFiftyService.getFiftyApi().getUpdateTotalCount();
+    if (fiftySize < updateFiftyTotalCount) {
+      educationFiftyService.updateFifty(updateFiftyTotalCount - fiftySize);
+      fiftySize = updateFiftyTotalCount;
+    }
   }
 
 }

@@ -20,7 +20,7 @@ class SeniorApiTest {
   @DisplayName("공공 데이터에서 json을 정상적으로 파싱하는지 확인한다.")
   @Test
   void parsing_check() {
-    seniorApi.getJson();
+    seniorApi.getJson(0);
     System.out.println("seniorApi.getTotalCount() = " + seniorApi.getTotalCount());
     System.out.println("seniorApi.getSubResult() = " + seniorApi.getSubResult());
     System.out.println("seniorApi.getInfoArr() = " + seniorApi.getInfoArr());

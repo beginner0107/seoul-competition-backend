@@ -32,6 +32,8 @@ public class EducationController {
     if (first) {
       educationService.saveAll();
       first = false;
+    } else {
+      educationService.update();
     }
     EducationListPageResponse response = educationService.getEducations(pageable, reqDto);
     return ResponseEntity.status(HttpStatus.OK).body(response);
