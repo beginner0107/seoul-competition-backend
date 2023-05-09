@@ -93,13 +93,20 @@ public class EducationService {
     educationFiftyService.saveFifty();
     educationSeniorService.saveSenior(0);
     seniorSize = educationSeniorService.getSeniorApi().getTotalCount().intValue();
+    fiftySize = educationFiftyService.getFiftyApi().getTotalCount().intValue();
   }
 
   @Transactional
   public void update() {
-    int updateTotalCount = educationSeniorService.getSeniorApi().getUpdateTotalCount();
-    if (seniorSize < updateTotalCount) {
-      educationSeniorService.saveSenior(seniorSize+1);
+    int updateSeniorTotalCount = educationSeniorService.getSeniorApi().getUpdateTotalCount();
+    if (seniorSize < updateSeniorTotalCount) {
+      educationSeniorService.saveSenior(seniorSize + 1);
+      seniorSize = updateSeniorTotalCount;
+    }
+    int updateFiftyTotalCount = educationFiftyService.getFiftyApi().getUpdateTotalCount();
+    if (fiftySize < updateFiftyTotalCount) {
+      educationFiftyService.updateFifty(updateFiftyTotalCount - fiftySize);
+      fiftySize = updateFiftyTotalCount;
     }
   }
 
