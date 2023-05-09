@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ReviewSaveReqDto(
-    @NotNull(message = "교육 번호를 입력해주세요.") Long EducationId,
+    @NotNull(message = "교육 번호를 입력해주세요.") Long educationId,
     @NotBlank(message = "닉네임을 입력해주세요.") String nickname,
     @NotBlank(message = "비밀번호를 입력해주세요.") String password,
     @NotBlank(message = "댓글을 입력해주세요.") String content
