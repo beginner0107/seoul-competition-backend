@@ -34,8 +34,8 @@ public class EducationService {
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
 
-  private int seniorSize=0;
-  private int fiftySize=0;
+  private int seniorSize = 0;
+  private int fiftySize = 0;
 
   public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto) {
 
@@ -92,7 +92,15 @@ public class EducationService {
   public void saveAll() {
     educationFiftyService.saveFifty();
     educationSeniorService.saveSenior(0);
-    seniorSize = educationSeniorService.getTotalCount();
+    seniorSize = educationSeniorService.getSeniorApi().getTotalCount().intValue();
+  }
+
+  @Transactional
+  public void update() {
+    int updateTotalCount = educationSeniorService.getSeniorApi().getUpdateTotalCount();
+    if (seniorSize < updateTotalCount) {
+      educationSeniorService.saveSenior(seniorSize+1);
+    }
   }
 
 }

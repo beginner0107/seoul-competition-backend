@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class SeniorApi {
 
   private static final String OPENAPI_URL =
-      "http://openapi.seoul.go.kr:8088/%s/json/tbViewProgram/%s/999";
+      "http://openapi.seoul.go.kr:8088/%s/json/tbViewProgram/%s/%s";
 
   @Value("${key.senior}")
   private String key;
@@ -28,7 +28,7 @@ public class SeniorApi {
 
   public void getJson(int pageNumber) {
     try {
-      URL url = new URL(String.format(OPENAPI_URL, key, pageNumber));
+      URL url = new URL(String.format(OPENAPI_URL, key, pageNumber, 999));
       BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
       jsonPasring(bf.readLine());
     } catch (Exception e) {
@@ -44,5 +44,19 @@ public class SeniorApi {
     totalCount = (Long) tbView.get("list_total_count");
     subResult = (JSONObject) tbView.get("RESULT");
     infoArr = (JSONArray) tbView.get("row");
+  }
+
+  public int getUpdateTotalCount() {
+    try {
+      URL url = new URL(String.format(OPENAPI_URL, key, 1, 1));
+      BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+      JSONParser jsonParser = new JSONParser();
+      JSONObject jsonObject = (JSONObject) jsonParser.parse(bf.readLine());
+      JSONObject tbView = (JSONObject) jsonObject.get("tbViewProgram");
+      return ((Long) tbView.get("list_total_count")).intValue();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return Long.valueOf(totalCount).intValue();
   }
 }

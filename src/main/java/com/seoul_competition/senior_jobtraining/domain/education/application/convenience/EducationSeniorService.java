@@ -73,8 +73,4 @@ public class EducationSeniorService {
     return applyState;
   }
 
-  public int getTotalCount() {
-    return Long.valueOf(seniorApi.getTotalCount()).intValue();
-  }
-
 }
