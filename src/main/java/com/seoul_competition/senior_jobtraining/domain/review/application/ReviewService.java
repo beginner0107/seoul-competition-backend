@@ -26,7 +26,7 @@ public class ReviewService {
 
   @Transactional
   public void create(ReviewSaveReqDto reqDto) {
-    Education education = educationRepository.findById(reqDto.EducationId())
+    Education education = educationRepository.findById(reqDto.educationId())
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.EDUCATION_NOT_EXISTS));
 
     reviewRepository.save(reqDto.toEntity(education));
