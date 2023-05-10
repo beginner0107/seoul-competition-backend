@@ -2,6 +2,7 @@ package com.seoul_competition.senior_jobtraining.domain.post.api;
 
 import com.seoul_competition.senior_jobtraining.domain.post.application.PostService;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSaveReqDto;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSearchReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
@@ -31,12 +32,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "게시글", description = "게시글에 대한 API입니다.")
@@ -65,17 +66,16 @@ public class PostController {
   @Operation(summary = "게시글 목록 조회", description = "페이징 처리된 게시글 목록을 조회합니다.")
   @GetMapping
   public ResponseEntity<PostListResponse> getPosts(
-      @RequestParam(name = "name", required = false) String searchValue,
       @PageableDefault(size = 20, sort = "createdAt", direction = Direction.DESC)
       Pageable pageable, @CookieValue(value = "jwt", required = false) String jwt,
-      HttpServletResponse response) {
+      HttpServletResponse response, @ModelAttribute PostSearchReqDto reqDto) {
 
-    PostListResponse posts = postService.getPosts(pageable, searchValue,
+    PostListResponse posts = postService.getPosts(pageable, reqDto,
         JwtUtil.verifyJwt(jwt, SECRET_KEY));
-    if (posts.isUser() && searchValue != null && searchValue.length() != 0) {
+    if (posts.isUser() && reqDto.name() != null && reqDto.name().length() != 0) {
       Claims claims = JwtUtil.getClaims(jwt, SECRET_KEY);
       userSearchService.saveUserSearch(
-          UserSearchSaveDto.from(claims, searchValue, BoardCategory.FREE));
+          UserSearchSaveDto.from(claims, reqDto.name(), BoardCategory.FREE));
     } else if (!posts.isUser()) {
       Cookie cookie = CookieUtil.createExpiredCookie("jwt");
       response.addCookie(cookie);

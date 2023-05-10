@@ -72,7 +72,7 @@ class CommentControllerTest {
     CommentSaveReqDto reqDto = CommentSaveReqDto.of(1L, "nickname", "password", "content");
 
     // when
-    ResultActions resultActions = mvc.perform(post("/api/v1/comments")
+    ResultActions resultActions = mvc.perform(post("/api/v1/comment")
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(reqDto)));
 
@@ -87,7 +87,7 @@ class CommentControllerTest {
     CommentSaveReqDto reqDto = CommentSaveReqDto.of(999L, "nickname", "password", "content");
 
     // when
-    ResultActions resultActions = mvc.perform(post("/api/v1/comments")
+    ResultActions resultActions = mvc.perform(post("/api/v1/comment")
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(reqDto)));
 
@@ -103,7 +103,7 @@ class CommentControllerTest {
     CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("1234", "updated content");
 
     // when
-    ResultActions resultActions = mvc.perform(put("/api/v1/comments/" + commentId, 1L)
+    ResultActions resultActions = mvc.perform(put("/api/v1/comment/" + commentId, 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(reqDto)));
 
@@ -120,7 +120,7 @@ class CommentControllerTest {
 
     // when
     ResultActions resultActions = mvc.perform(
-        post("/api/v1/comments/" + commentId + "/matchCheck", 1L)
+        post("/api/v1/comment/" + commentId + "/matchCheck", 1L)
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(reqDto)));
 
@@ -137,7 +137,7 @@ class CommentControllerTest {
     password.put("password", "1234");
 
     // when
-    ResultActions resultActions = mvc.perform(delete("/api/v1/comments/" + commentId, 1L)
+    ResultActions resultActions = mvc.perform(delete("/api/v1/comment/" + commentId, 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(password)));
 
@@ -154,7 +154,7 @@ class CommentControllerTest {
     password.put("password", "incorrectpassword");
 
     // when
-    ResultActions resultActions = mvc.perform(delete("/api/v1/comments/" + commentId, 1L)
+    ResultActions resultActions = mvc.perform(delete("/api/v1/comment/" + commentId, 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(password)));
 
@@ -171,7 +171,7 @@ class CommentControllerTest {
     password.put("password", "1234");
 
     // when
-    ResultActions resultActions = mvc.perform(delete("/api/v1/comments/" + commentId, 1L)
+    ResultActions resultActions = mvc.perform(delete("/api/v1/comment/" + commentId, 1L)
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(password)));
 

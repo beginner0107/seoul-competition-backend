@@ -1,15 +1,19 @@
 package com.seoul_competition.senior_jobtraining.domain.post.application;
 
+import com.querydsl.core.BooleanBuilder;
 import com.seoul_competition.senior_jobtraining.domain.post.dao.PostRepository;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSaveReqDto;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSearchReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.entity.Post;
+import com.seoul_competition.senior_jobtraining.domain.post.entity.QPost;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
 import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
 import com.seoul_competition.senior_jobtraining.global.error.exception.EntityNotFoundException;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -64,12 +68,23 @@ public class PostService {
     postRepository.delete(post);
   }
 
-  public PostListResponse getPosts(Pageable pageable, String searchTerm, boolean hasCookie) {
+  public PostListResponse getPosts(Pageable pageable, PostSearchReqDto reqDto, boolean hasCookie) {
+    BooleanBuilder builder = new BooleanBuilder();
+    if (reqDto.startDate() != null) {
+      builder.and(QPost.post.createdAt.goe(reqDto.startDate().atStartOfDay()));
+    }
+    if (reqDto.endDate() != null) {
+      builder.and(QPost.post.createdAt.loe(reqDto.endDate().atTime(LocalTime.MAX)));
+    }
     Page<Post> postPage;
-    if (searchTerm != null && !searchTerm.isEmpty()) {
-      postPage = postRepository.findByTitleOrContent(searchTerm, pageable);
+    if (reqDto.name() != null && !reqDto.name().isEmpty() && reqDto.startDate() != null
+        && reqDto.endDate() != null) {
+      postPage = postRepository.findBySearchValueAndCreatedAtBetween(reqDto.name(),
+          reqDto.startDate().atStartOfDay(), reqDto.endDate().atTime(LocalTime.MAX), pageable);
+    } else if (reqDto.name() != null && !reqDto.name().isEmpty() && reqDto.startDate() == null) {
+      postPage = postRepository.findByTitleOrContent(reqDto.name(), pageable);
     } else {
-      postPage = postRepository.findAll(pageable);
+      postPage = postRepository.findAll(builder, pageable);
     }
 
     checkPageNumber(pageable, postPage);
