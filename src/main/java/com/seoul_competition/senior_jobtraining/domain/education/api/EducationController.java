@@ -3,8 +3,8 @@ package com.seoul_competition.senior_jobtraining.domain.education.api;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.seoul_competition.senior_jobtraining.domain.education.application.EducationService;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.request.EducationRequest;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.request.EducationSearchReqDto;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.request.OriginIdRequest;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.request.SearchKeywordRequest;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
@@ -105,22 +105,17 @@ public class EducationController {
   @GetMapping("/similar")
   public ResponseEntity<RecommendationEducationsResponse> recommend(
       @RequestParam(required = false) String keyword,
-      @RequestParam(required = false) Long originId) {
+      @RequestParam(required = false) Long educationId) {
     RecommendationEducationsResponse response = RecommendationEducationsResponse.of(List.of());
     if (StringUtils.hasText(keyword)) {
       RecommendationEducations recommendationEducations = callRecommendationApi(
-          RECOMMEND_SEARCH_KEYWORD_URL,
-          SearchKeywordRequest.of(keyword));
-      response = educationService
-          .findRecommendedTraining(recommendationEducations.results());
+          RECOMMEND_SEARCH_KEYWORD_URL, SearchKeywordRequest.of(keyword));
+      response = educationService.findRecommendedTraining(recommendationEducations.results());
       return ResponseEntity.ok(response);
-    } else if (originId != null) {
+    } else if (educationId != null) {
       RecommendationEducations recommendationEducations = callRecommendationApi(
-          RECOMMEND_ORIGIN_ID_URL,
-          OriginIdRequest.of(originId));
-      response = educationService
-          .findRecommendedTraining(
-              recommendationEducations.results());
+          RECOMMEND_ORIGIN_ID_URL, EducationRequest.of(educationId));
+      response = educationService.findRecommendedTraining(recommendationEducations.results());
       return ResponseEntity.ok(response);
     } else {
       return ResponseEntity.ok(response);
