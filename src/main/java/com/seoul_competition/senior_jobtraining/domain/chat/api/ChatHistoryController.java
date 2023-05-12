@@ -27,15 +27,15 @@ public class ChatHistoryController {
 
   private final ChatHistoryService chatHistoryService;
   private final WebClient webClient;
+  private static final String API_URL = "http://fastapi:8000/chat/answer";
 
   @Operation(summary = "채팅 응답 기록", description = "채팅 응답을 받습니다.")
   @PostMapping("/question")
   public Mono<ResponseEntity<ChatQuestionResDto>> chatAnswer(
       @RequestBody @Valid ChatQuestionReqDto reqDto) {
-    String apiUrl = "http://localhost:8000/chat/answer";  // FastAPI 서버의 URL
 
     return webClient.post()
-        .uri(apiUrl)
+        .uri(API_URL)
         .body(BodyInserters.fromValue(reqDto))
         .retrieve()
         .bodyToMono(ChatAnswerResDto.class)
