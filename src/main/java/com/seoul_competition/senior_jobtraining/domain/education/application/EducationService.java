@@ -10,6 +10,9 @@ import com.seoul_competition.senior_jobtraining.domain.education.dto.request.Edu
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducation;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducationsDto;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducationsResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
 import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Getter
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class EducationService {
 
@@ -82,10 +87,10 @@ public class EducationService {
   }
 
   @Transactional
-  public EducationDetailResDto findById(Long id,Boolean user) {
+  public EducationDetailResDto findById(Long id, Boolean user) {
     Education findEducation = educationRepository.findById(id).get();
     findEducation.hitsPlus();
-    return new EducationDetailResDto(findEducation,user);
+    return new EducationDetailResDto(findEducation, user);
   }
 
 
@@ -118,4 +123,13 @@ public class EducationService {
     }
   }
 
+  public RecommendationEducationsResponse findRecommendedTraining(
+      List<RecommendationEducation> results) {
+    List<Long> ids = results.stream()
+        .map(RecommendationEducation::from)
+        .collect(Collectors.toList());
+    List<RecommendationEducationsDto> recommendationEducationsDto = educationRepository.findByIdIn(
+        ids);
+    return RecommendationEducationsResponse.of(recommendationEducationsDto);
+  }
 }
