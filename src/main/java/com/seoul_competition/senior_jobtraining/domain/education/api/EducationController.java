@@ -58,7 +58,7 @@ public class EducationController {
 
   private boolean first = true;
   private static final String RECOMMEND_SEARCH_KEYWORD_URL = "http://fastapi:8000/recommend/searchKeyword";
-  private static final String RECOMMEND_ORIGIN_ID_URL = "http://fastapi:8000/recommend/originId";
+  private static final String RECOMMEND_EDUCATION_ID_URL = "http://fastapi:8000/recommend/educationId";
 
   @GetMapping
   public ResponseEntity<EducationListPageResponse> getAllEducations(
@@ -114,7 +114,7 @@ public class EducationController {
       return ResponseEntity.ok(response);
     } else if (educationId != null) {
       RecommendationEducations recommendationEducations = callRecommendationApi(
-          RECOMMEND_ORIGIN_ID_URL, EducationRequest.of(educationId));
+          RECOMMEND_EDUCATION_ID_URL, EducationRequest.of(educationId));
       response = educationService.findRecommendedTraining(recommendationEducations.results());
       return ResponseEntity.ok(response);
     } else {
