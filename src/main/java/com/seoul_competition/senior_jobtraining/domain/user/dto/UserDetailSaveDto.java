@@ -24,14 +24,14 @@ public record UserDetailSaveDto(
     );
   }
 
-  public static UserDetail toEntity(UserDetailSaveDto saveDto) {
+  public UserDetail toEntity() {
     return UserDetail.builder()
-        .boardCategory(saveDto.category)
-        .gender(saveDto.gender)
-        .age(saveDto.age)
-        .location(saveDto.location)
-        .interest(saveDto.interest)
-        .postId(saveDto.postId)
+        .boardCategory(category)
+        .gender(gender)
+        .age(age)
+        .location(location)
+        .interest(interest)
+        .postId(postId)
         .build();
   }
 }
