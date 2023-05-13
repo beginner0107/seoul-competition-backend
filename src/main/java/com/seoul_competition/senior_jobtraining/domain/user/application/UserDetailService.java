@@ -15,6 +15,6 @@ public class UserDetailService {
 
   @Transactional
   public void saveUserDetail(UserDetailSaveDto saveDto) {
-    userDetailRepository.save(UserDetailSaveDto.toEntity(saveDto));
+    userDetailRepository.save(saveDto.toEntity());
   }
 }

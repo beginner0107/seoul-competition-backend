@@ -13,18 +13,19 @@ public record UserSearchSaveDto(
     String keyword
 ) {
 
-  public static UserSearch toEntity(UserSearchSaveDto saveDto) {
+  public UserSearch toEntity() {
     return UserSearch.builder()
-        .category(saveDto.category)
-        .gender(saveDto.gender)
-        .age(saveDto.age)
-        .location(saveDto.location)
-        .interest(saveDto.interest)
-        .keyword(saveDto.keyword)
+        .category(category)
+        .gender(gender)
+        .age(age)
+        .location(location)
+        .interest(interest)
+        .keyword(keyword)
         .build();
   }
 
-  public static UserSearchSaveDto from(Claims claims, String searchValue,BoardCategory boardCategory) {
+  public static UserSearchSaveDto from(Claims claims, String searchValue,
+      BoardCategory boardCategory) {
     return new UserSearchSaveDto(
         boardCategory,
         claims.get("gender").toString(),
