@@ -15,7 +15,7 @@ public class UserSearchService {
 
   @Transactional
   public void saveUserSearch(UserSearchSaveDto saveDto) {
-    userSearchRepository.save(UserSearchSaveDto.toEntity(saveDto));
+    userSearchRepository.save(saveDto.toEntity());
   }
 
 }
