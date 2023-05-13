@@ -100,7 +100,8 @@ class CommentControllerTest {
   void givenCommentInfo_whenUpdating_thenUpdatesComment() throws Exception {
     // given
     Long commentId = 1L;
-    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("1234", "updated content");
+    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("modifyNickname", "1234",
+        "updated content");
 
     // when
     ResultActions resultActions = mvc.perform(put("/api/v1/comment/" + commentId, 1L)
@@ -116,7 +117,8 @@ class CommentControllerTest {
   void givenIncorrectPassword_whenUpdating_thenReturnsBadRequest() throws Exception {
     // given
     Long commentId = 1L;
-    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("incorrectpassword", "updated content");
+    CommentUpdateReqDto reqDto = CommentUpdateReqDto.of("modifyNickname", "incorrectpassword",
+        "updated content");
 
     // when
     ResultActions resultActions = mvc.perform(
