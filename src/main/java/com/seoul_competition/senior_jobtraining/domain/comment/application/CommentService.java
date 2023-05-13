@@ -37,7 +37,7 @@ public class CommentService {
             ErrorCode.COMMENT_NOT_EXISTS));
 
     comment.checkPassword(reqDto.password());
-    comment.update(reqDto.content());
+    comment.update(reqDto.nickname(), reqDto.content());
   }
 
   @Transactional
