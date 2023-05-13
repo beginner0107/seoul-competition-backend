@@ -31,7 +31,7 @@ public class ChatHistory {
 
   private String answer;
 
-  private boolean feedback;
+  private Boolean feedback = null;
 
   @CreatedDate
   @Column(nullable = false)
