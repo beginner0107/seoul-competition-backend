@@ -73,7 +73,7 @@ class CommentServiceTest {
     // Given
     Long commentId = 1L;
     Comment comment = createComment(commentId, "password", "content");
-    CommentUpdateReqDto dto = createCommentUpdateReqDto("password",
+    CommentUpdateReqDto dto = createCommentUpdateReqDto("modifyNickname", "password",
         "updated content");
     given(commentRepository.findById(commentId)).willReturn(Optional.ofNullable(comment));
     Mockito.lenient().when(commentRepository.save(any(Comment.class))).thenReturn(null);
@@ -91,7 +91,7 @@ class CommentServiceTest {
   void givenNonexistentCommentId_whenUpdatingPostComment_thenThrowsEntityNotFoundException() {
     // Given
     Long nonExistentCommentId = 999L;
-    CommentUpdateReqDto dto = createCommentUpdateReqDto("password",
+    CommentUpdateReqDto dto = createCommentUpdateReqDto("modifyNickname", "password",
         "updated content");
     given(commentRepository.findById(nonExistentCommentId)).willReturn(Optional.empty());
 
@@ -106,7 +106,7 @@ class CommentServiceTest {
     // Given
     Long commentId = 1L;
     Comment comment = createComment(commentId, "password", "content");
-    CommentUpdateReqDto dto = createCommentUpdateReqDto("wrong_password",
+    CommentUpdateReqDto dto = createCommentUpdateReqDto("modifyNickname", "wrong_password",
         "updated content");
     given(commentRepository.findById(commentId)).willReturn(Optional.ofNullable(comment));
 
@@ -162,9 +162,9 @@ class CommentServiceTest {
   }
 
 
-  private CommentUpdateReqDto createCommentUpdateReqDto(String password,
+  private CommentUpdateReqDto createCommentUpdateReqDto(String nickname, String password,
       String updatedContent) {
-    return CommentUpdateReqDto.of(password, updatedContent);
+    return CommentUpdateReqDto.of(nickname, password, updatedContent);
   }
 
   private Comment createComment(Long commentId, String password, String content) {
