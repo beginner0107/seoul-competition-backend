@@ -19,7 +19,7 @@ public interface EducationRepository extends JpaRepository<Education, Long>,
   Optional<Education> findByOriginId(Long originId);
 
   @Query("SELECT new com.seoul_competition.senior_jobtraining.domain.education.dto.response"
-      + ".RecommendationEducationsDto(e.id, e.name, e.status, e.capacity, e.registerStart"
+      + ".RecommendationEducationsDto(e.id, e.name, e.status, e.price, e.capacity, e.registerStart"
       + ", e.registerEnd, e.educationStart, e.educationEnd, e.url, e.hits) "
       + "FROM Education e WHERE e.id IN :ids")
   List<RecommendationEducationsDto> findByIdIn(List<Long> ids);
