@@ -8,7 +8,7 @@ public record ChatHistoryMonthReqDto(
     String question,
     String answer,
     Boolean feedback,
-    LocalDateTime createAt
+    LocalDateTime createdAt
 ) {
 
   public static ChatHistoryMonthReqDto from(ChatHistory chatHistory) {
