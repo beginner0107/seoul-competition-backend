@@ -12,6 +12,7 @@ public class RecommendationEducationsDto {
   private Long id;
   private String name;
   private String status;
+  private int price;
   private Integer capacity;
   @JsonFormat(pattern = "yyyy.MM.dd")
   private LocalDate registerStart;
