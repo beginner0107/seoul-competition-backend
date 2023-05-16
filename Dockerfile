@@ -1,44 +1,30 @@
 # Build Stage
-FROM gradle:7.6-jdk17-alpine as TEMP_BUILD_IMAGE
+FROM gradle:7.6-jdk17-alpine as BUILD
 
-# 환경변수 설정
-ENV APP_HOME=/usr/app/
+# 작업 디렉토리 설정
+WORKDIR /home/gradle/src
 
-# 경로 설정
-WORKDIR $APP_HOME
+# Gradle 파일 복사
+COPY build.gradle settings.gradle ./
+COPY gradle ./gradle
 
-# build.gradle, settings.gradle, gradle 복사
-COPY build.gradle settings.gradle $APP_HOME
-COPY gradle $APP_HOME/gradle
-COPY --chown=gradle:gradle . /home/gradle/src
-
-# 권한 변경
-USER root
-
-RUN chown -R gradle /home/gradle/src
-
-# gradle build 명령어를 실행 > 빌드 실패시 에러 무시
-RUN gradle build || return 0
-
-# 코드 복사 > 새로 애플리케이션 빌드
+# 소스 코드 복사
 COPY . .
+
+# 애플리케이션 빌드
 RUN gradle clean build -x test
 
 # Run Stage
 FROM openjdk:17.0.2-jdk
 
-# 환경변수 설정
-ENV APP_HOME=/usr/app/
-ENV ARTIFACT_NAME=app.jar
+# 작업 디렉토리 설정
+WORKDIR /usr/app
 
-# 경로 설정
-WORKDIR $APP_HOME
+# Build Stage에서 생성된 JAR 파일 복사
+COPY --from=BUILD /home/gradle/src/build/libs/app.jar .
 
-# Build Stage에서 만든 JAR 파일 복사
-COPY --from=TEMP_BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_NAME .
-
-# 포트번호
+# 포트 노출
 EXPOSE 8080
 
-# JAR 파일 실행
-ENTRYPOINT exec java -jar ${ARTIFACT_NAME}
+# 애플리케이션 실행
+ENTRYPOINT ["java", "-jar", "app.jar"]
