@@ -65,7 +65,8 @@ public class Review {
     }
   }
 
-  public void update(String content) {
+  public void update(String nickname, String content) {
+    this.nickname = nickname;
     this.content = content;
   }
 }

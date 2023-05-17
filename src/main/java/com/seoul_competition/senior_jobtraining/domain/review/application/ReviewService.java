@@ -40,7 +40,7 @@ public class ReviewService {
 
     review.checkPassword(reqDto.password());
 
-    review.update(reqDto.content());
+    review.update(reqDto.nickname(), reqDto.content());
   }
 
   @Transactional
