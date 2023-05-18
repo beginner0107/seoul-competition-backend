@@ -7,7 +7,7 @@ import io.jsonwebtoken.Claims;
 public record UserSearchSaveDto(
     BoardCategory category,
     String gender,
-    String age,
+    int age,
     String location,
     String interest,
     String keyword
@@ -29,7 +29,7 @@ public record UserSearchSaveDto(
     return new UserSearchSaveDto(
         boardCategory,
         claims.get("gender").toString(),
-        claims.get("age").toString(),
+        Integer.parseInt(claims.get("age").toString()),
         claims.get("location").toString(),
         claims.get("interest").toString(),
         searchValue
