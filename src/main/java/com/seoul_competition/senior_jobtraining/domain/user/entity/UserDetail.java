@@ -35,7 +35,7 @@ public class UserDetail {
   private String gender;
 
   @Column(nullable = false)
-  private String age;
+  private int age;
 
   @Column(nullable = false)
   private String location;
@@ -51,7 +51,7 @@ public class UserDetail {
   private LocalDateTime createdAt;
 
   @Builder
-  public UserDetail(BoardCategory boardCategory, String gender, String age, String location,
+  public UserDetail(BoardCategory boardCategory, String gender, int age, String location,
       String interest, Long postId) {
     this.category = boardCategory;
     this.gender = gender;
