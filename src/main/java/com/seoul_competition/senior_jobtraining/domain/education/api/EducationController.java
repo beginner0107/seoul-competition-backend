@@ -139,9 +139,17 @@ public class EducationController {
 
   @GetMapping("/topFive/hits")
   private ResponseEntity<EducationRankResDto> getFiveEducationsByHits(
-      @CookieValue(value = "jwt", required = false) String jwt) {
-    EducationRankResDto resDto = educationRankService.getFiveByHits(
-        JwtUtil.verifyJwt(jwt, SECRET_KEY));
+      @CookieValue(value = "jwt", required = false) String jwt,
+      @RequestParam(value = "interest", required = false) String interest) {
+
+    EducationRankResDto resDto;
+
+    if (!StringUtils.hasText(interest)) {
+      resDto = educationRankService.getFiveByHits(JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    } else {
+      resDto = educationRankService.getFiveInterestByHits(interest,
+          JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    }
 
     return ResponseEntity.ok(resDto);
   }

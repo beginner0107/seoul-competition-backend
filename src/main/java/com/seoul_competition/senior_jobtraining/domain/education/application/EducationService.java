@@ -128,7 +128,7 @@ public class EducationService {
     List<Long> ids = results.stream()
         .map(RecommendationEducation::from)
         .collect(Collectors.toList());
-    List<RecommendationEducationsDto> recommendationEducationsDto = educationRepository.findByIdIn(
+    List<RecommendationEducationsDto> recommendationEducationsDto = educationRepository.recommendQuery(
         ids);
     return RecommendationEducationsResponse.of(recommendationEducationsDto);
   }
