@@ -35,7 +35,7 @@ public class UserSearch {
   private String gender;
 
   @Column(nullable = false)
-  private int age;
+  private String age;
 
   @Column(nullable = false)
   private String location;
@@ -48,7 +48,7 @@ public class UserSearch {
   private LocalDateTime createdAt;
 
   @Builder
-  public UserSearch(BoardCategory category, String gender, int age, String location,
+  public UserSearch(BoardCategory category, String gender, String age, String location,
       String interest,
       String keyword) {
     this.category = category;

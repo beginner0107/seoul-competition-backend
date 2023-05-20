@@ -7,18 +7,17 @@ import io.jsonwebtoken.Claims;
 public record UserDetailSaveDto(
     BoardCategory category,
     String gender,
-    int age,
+    String age,
     String location,
     String interest,
     Long postId
 ) {
 
   public static UserDetailSaveDto from(Claims claims, Long postId, BoardCategory boardCategory) {
-
     return new UserDetailSaveDto(
         boardCategory,
         claims.get("gender").toString(),
-        Integer.parseInt(claims.get("age").toString()),
+        claims.get("age").toString(),
         claims.get("location").toString(),
         claims.get("interest").toString(),
         postId
