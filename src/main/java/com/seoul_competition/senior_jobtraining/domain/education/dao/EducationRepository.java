@@ -19,7 +19,7 @@ public interface EducationRepository extends JpaRepository<Education, Long>,
 
   Optional<Education> findByOriginId(Long originId);
 
-  @Query("SELECT new com.seoul_competition.senior_jobtraining.domain.education.dto.response"
+  @Query("SELECT new com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend"
       + ".RecommendationEducationsDto(e.id, e.name, e.status, CASE WHEN e.price IS NULL THEN null "
       + "ELSE CAST(e.price AS java.lang.String) END, e.capacity, e.registerStart"
       + ", e.registerEnd, e.educationStart, e.educationEnd, e.url, e.hits) "
