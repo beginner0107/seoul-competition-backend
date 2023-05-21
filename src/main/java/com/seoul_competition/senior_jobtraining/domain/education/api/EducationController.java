@@ -59,7 +59,6 @@ public class EducationController {
   private final EducationRankService educationRankService;
   private final WebClient webClient;
 
-  private boolean first = true;
   private static final String RECOMMEND_SEARCH_KEYWORD_URL = "http://fastapi:8000/recommend/searchKeyword";
   private static final String RECOMMEND_EDUCATION_ID_URL = "http://fastapi:8000/recommend/educationId";
 
@@ -69,12 +68,9 @@ public class EducationController {
       @ModelAttribute EducationSearchReqDto reqDto,
       @CookieValue(value = "jwt", required = false) String jwt,
       HttpServletResponse response) {
-    if (first) {
-      educationService.saveAll();
-      first = false;
-    } else {
-      educationService.update();
-    }
+
+    educationService.update();
+
     EducationListPageResponse educations = educationService.getEducations(pageable, reqDto,
         JwtUtil.verifyJwt(jwt, SECRET_KEY));
 

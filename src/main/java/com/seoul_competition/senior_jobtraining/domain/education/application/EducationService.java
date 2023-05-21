@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +39,6 @@ public class EducationService {
   private final SeniorApi seniorApi;
   private final EducationSeniorService educationSeniorService;
   private final EducationFiftyService educationFiftyService;
-
-  private int seniorSize = 0;
-  private int fiftySize = 0;
 
   public EducationListPageResponse getEducations(Pageable pageable, EducationSearchReqDto reqDto,
       boolean user) {
@@ -93,15 +91,6 @@ public class EducationService {
     return new EducationDetailResDto(findEducation, user);
   }
 
-
-  @Transactional
-  public void saveAll() {
-    educationFiftyService.saveFifty();
-    educationSeniorService.saveSenior(0);
-    seniorSize = educationSeniorService.getSeniorApi().getTotalCount().intValue();
-    fiftySize = educationFiftyService.getFiftyApi().getTotalCount().intValue();
-  }
-
   /***
    * 최근에 저장된 총 데이터 갯수인 totalCount를 저장하고 그것보다 크면 update 실행
    * senior - 마지막 페이지에 추가로 데이터가 들어오기 때문에, 현재 최대 크기 + 1을 해주어, 업데이트 데이터로 접근
@@ -109,17 +98,20 @@ public class EducationService {
    *           - 데이터 유무 분별은 OriginId로 하였음
    *           - 성능이슈가 조금 일어날 수 있으므로, 차수가 없어지면 바로 종료시켰음
    */
+
+  @Scheduled(cron = "0 0 10 * * *")
   @Transactional
   public void update() {
     int updateSeniorTotalCount = educationSeniorService.getSeniorApi().getUpdateTotalCount();
+    int seniorSize = educationRepository.countByOriginIdLessThanEqual(1000L);
     if (seniorSize < updateSeniorTotalCount) {
       educationSeniorService.saveSenior(seniorSize + 1);
-      seniorSize = updateSeniorTotalCount;
     }
+
     int updateFiftyTotalCount = educationFiftyService.getFiftyApi().getUpdateTotalCount();
+    int fiftySize = educationRepository.countByOriginIdGreaterThanEqual(1000L);
     if (fiftySize < updateFiftyTotalCount) {
       educationFiftyService.updateFifty(updateFiftyTotalCount - fiftySize);
-      fiftySize = updateFiftyTotalCount;
     }
   }
 
