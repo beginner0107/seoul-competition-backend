@@ -15,11 +15,13 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -69,10 +71,16 @@ public class UserController {
 
   @GetMapping("/topFive/keyword")
   private ResponseEntity<UserSearchKeywordListResDto> getFiveKeywordByHits(
-      @CookieValue(value = "jwt", required = false) String jwt
+      @CookieValue(value = "jwt", required = false) String jwt,
+      @RequestParam(value = "ages", required = false) String ages
   ) {
-    UserSearchKeywordListResDto resDto = userRankService.getUserSearchKeyword(
-        JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    UserSearchKeywordListResDto resDto;
+
+    if (StringUtils.hasText(ages)) {
+      resDto = userRankService.getUserSearchKeywordByAges(ages, JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    } else {
+      resDto = userRankService.getUserSearchKeyword(JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    }
 
     return ResponseEntity.ok(resDto);
   }

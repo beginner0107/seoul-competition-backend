@@ -26,4 +26,16 @@ public class UserRankService {
 
     return new UserSearchKeywordListResDto(collect, user);
   }
+
+  public UserSearchKeywordListResDto getUserSearchKeywordByAges(String ages, boolean user) {
+    List<Object[]> userSearchCountByKeyword = userSearchRepository.getUserSearchCountByKeywordAndAges(
+        ages);
+
+    List<UserSearchKeywordResDto> collect = userSearchCountByKeyword.stream()
+        .map(objects -> new UserSearchKeywordResDto(objects[0].toString(),
+            Integer.parseInt(objects[1].toString())))
+        .collect(Collectors.toList());
+
+    return new UserSearchKeywordListResDto(collect, user);
+  }
 }
