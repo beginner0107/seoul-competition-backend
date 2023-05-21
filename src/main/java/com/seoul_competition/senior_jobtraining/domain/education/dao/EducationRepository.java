@@ -19,11 +19,12 @@ public interface EducationRepository extends JpaRepository<Education, Long>,
 
   Optional<Education> findByOriginId(Long originId);
 
-  @Query("SELECT new com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend"
-      + ".RecommendationEducationsDto(e.id, e.name, e.status, CASE WHEN e.price IS NULL THEN null "
-      + "ELSE CAST(e.price AS java.lang.String) END, e.capacity, e.registerStart"
-      + ", e.registerEnd, e.educationStart, e.educationEnd, e.url, e.hits) "
-      + "FROM Education e WHERE e.id IN :ids")
+  @Query(
+      "SELECT new com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend"
+          + ".RecommendationEducationsDto(e.id, e.name, e.status, CASE WHEN e.price IS NULL THEN null "
+          + "ELSE CAST(e.price AS java.lang.String) END, e.capacity, e.registerStart"
+          + ", e.registerEnd, e.educationStart, e.educationEnd, e.url, e.hits) "
+          + "FROM Education e WHERE e.id IN :ids")
   List<RecommendationEducationsDto> recommendQuery(List<Long> ids);
 
 
@@ -32,4 +33,8 @@ public interface EducationRepository extends JpaRepository<Education, Long>,
   @Query("SELECT e FROM Education e WHERE e.id IN :educationIds ORDER BY FIND_IN_SET(e.id, :educationIdsAsString)")
   List<Education> findByIdInOrderByCustomSort(@Param("educationIds") List<Long> educationIds,
       @Param("educationIdsAsString") String educationIdsAsString);
+
+  int countByOriginIdLessThanEqual(long originId);
+
+  int countByOriginIdGreaterThanEqual(long originId);
 }
