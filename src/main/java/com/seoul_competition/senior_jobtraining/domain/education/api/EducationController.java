@@ -10,8 +10,8 @@ import com.seoul_competition.senior_jobtraining.domain.education.dto.request.Sea
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationRankResDto;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducations;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducationsResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducations;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducationsResponse;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserDetailService;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
