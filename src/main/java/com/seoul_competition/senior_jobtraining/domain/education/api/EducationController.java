@@ -138,7 +138,7 @@ public class EducationController {
   }
 
   @GetMapping("/topFive/hits")
-  private ResponseEntity<EducationRankResDto> getFiveEducationsByHits(
+  public ResponseEntity<EducationRankResDto> getFiveEducationsByHits(
       @CookieValue(value = "jwt", required = false) String jwt,
       @RequestParam(value = "interest", required = false) String interest) {
 
