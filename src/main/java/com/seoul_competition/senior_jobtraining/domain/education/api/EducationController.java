@@ -2,14 +2,16 @@ package com.seoul_competition.senior_jobtraining.domain.education.api;
 
 import static org.springframework.util.StringUtils.hasText;
 
+import com.seoul_competition.senior_jobtraining.domain.education.application.EducationRankService;
 import com.seoul_competition.senior_jobtraining.domain.education.application.EducationService;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.request.EducationRequest;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.request.EducationSearchReqDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.request.SearchKeywordRequest;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducations;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducationsResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationRankResDto;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducations;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducationsResponse;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserDetailService;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
@@ -54,6 +56,7 @@ public class EducationController {
   private final EducationService educationService;
   private final UserSearchService userSearchService;
   private final UserDetailService userDetailService;
+  private final EducationRankService educationRankService;
   private final WebClient webClient;
 
   private boolean first = true;
@@ -122,6 +125,7 @@ public class EducationController {
     }
   }
 
+
   private <T> RecommendationEducations callRecommendationApi(String apiUrl, T requestDto) {
     Mono<RecommendationEducations> response = webClient
         .method(HttpMethod.POST)
@@ -131,5 +135,22 @@ public class EducationController {
         .retrieve()
         .bodyToMono(RecommendationEducations.class);
     return response.block();
+  }
+
+  @GetMapping("/topFive/hits")
+  public ResponseEntity<EducationRankResDto> getFiveEducationsByHits(
+      @CookieValue(value = "jwt", required = false) String jwt,
+      @RequestParam(value = "interest", required = false) String interest) {
+
+    EducationRankResDto resDto;
+
+    if (!StringUtils.hasText(interest)) {
+      resDto = educationRankService.getFiveByHits(JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    } else {
+      resDto = educationRankService.getFiveInterestByHits(interest,
+          JwtUtil.verifyJwt(jwt, SECRET_KEY));
+    }
+
+    return ResponseEntity.ok(resDto);
   }
 }

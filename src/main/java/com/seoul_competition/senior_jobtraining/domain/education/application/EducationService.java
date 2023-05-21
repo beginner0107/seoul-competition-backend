@@ -10,9 +10,9 @@ import com.seoul_competition.senior_jobtraining.domain.education.dto.request.Edu
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationListPageResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.dto.response.EducationResponse;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducation;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducationsDto;
-import com.seoul_competition.senior_jobtraining.domain.education.dto.response.RecommendationEducationsResponse;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducation;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducationsDto;
+import com.seoul_competition.senior_jobtraining.domain.education.dto.response.Recommend.RecommendationEducationsResponse;
 import com.seoul_competition.senior_jobtraining.domain.education.entity.Education;
 import com.seoul_competition.senior_jobtraining.global.error.ErrorCode;
 import com.seoul_competition.senior_jobtraining.global.error.exception.BusinessException;
@@ -128,7 +128,7 @@ public class EducationService {
     List<Long> ids = results.stream()
         .map(RecommendationEducation::from)
         .collect(Collectors.toList());
-    List<RecommendationEducationsDto> recommendationEducationsDto = educationRepository.findByIdIn(
+    List<RecommendationEducationsDto> recommendationEducationsDto = educationRepository.recommendQuery(
         ids);
     return RecommendationEducationsResponse.of(recommendationEducationsDto);
   }

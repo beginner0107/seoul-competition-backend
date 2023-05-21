@@ -1,11 +1,13 @@
 package com.seoul_competition.senior_jobtraining.domain.post.api;
 
+import com.seoul_competition.senior_jobtraining.domain.post.application.PostRankService;
 import com.seoul_competition.senior_jobtraining.domain.post.application.PostService;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSaveReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostSearchReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.request.PostUpdateReqDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostDetailResDto;
 import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostListResponse;
+import com.seoul_competition.senior_jobtraining.domain.post.dto.response.PostRankListResDto;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserDetailService;
 import com.seoul_competition.senior_jobtraining.domain.user.application.UserSearchService;
 import com.seoul_competition.senior_jobtraining.domain.user.dto.UserDetailSaveDto;
@@ -53,6 +55,7 @@ public class PostController {
   private final PostService postService;
   private final UserSearchService userSearchService;
   private final UserDetailService userDetailService;
+  private final PostRankService postRankService;
 
   @Operation(summary = "게시글 저장", description = "게시글을 저장합니다.")
   @PostMapping
@@ -124,5 +127,14 @@ public class PostController {
       @RequestBody Map<String, String> password) {
     postService.matchCheck(postId, password.get("password"));
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/topFive/hits")
+  private ResponseEntity<PostRankListResDto> getFivePostByHits(
+      @CookieValue(value = "jwt", required = false) String jwt) {
+
+    PostRankListResDto resDto = postRankService.getFiveByHits(JwtUtil.verifyJwt(jwt, SECRET_KEY));
+
+    return ResponseEntity.ok(resDto);
   }
 }

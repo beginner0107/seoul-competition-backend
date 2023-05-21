@@ -34,4 +34,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
       @Param("startDate") LocalDateTime startDate,
       @Param("endDate") LocalDateTime endDate,
       Pageable pageable);
+
+  List<Post> findTop5ByOrderByHitsDesc();
 }
